@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classroom | Indian Info Tech</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Great+Vibes&display=swap"
+        rel="stylesheet">
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <style>
+        .get-cert-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            font-size: 0.8rem;
+            margin-top: 1rem;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .get-cert-btn:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .cert-announcement {
+            margin: 2rem 0;
+            padding: 2.5rem;
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(20, 83, 34, 0.2) 100%);
+            border: 2px solid #28a745;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="video-page-layout">
+        <!-- Sidebar Playlist -->
+        <aside class="playlist-sidebar">
+            <div class="course-header">
+                <a href="teach_dashboard.html"
+                    style="color: #888; text-decoration: none; font-size: 0.9rem; margin-bottom: 0.5rem; display: block;">&larr;
+                    Back to Course Overview</a>
+                <h2 id="courseNameHeader">100K Coding Challenge</h2>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
+                    <div id="courseProgressText" style="font-size: 0.8rem; color: #888;">0% Complete</div>
+                    <div id="coursePartsIndicator"
+                        style="font-size: 0.75rem; color: var(--gold); font-weight: 700; background: rgba(212, 175, 55, 0.1); padding: 2px 8px; border-radius: 4px;">
+                    </div>
+                </div>
+            </div>
+
+            <ul class="lesson-list" id="lessonList">
+                <!-- Lessons populated dynamically -->
+            </ul>
+
+            <div id="sidebarCertSection" style="padding: 1rem; border-top: 1px solid #333; display: none;">
+                <button onclick="openCertificateForm()" class="get-cert-btn">
+                    <i class="bi bi-award-fill"></i> certificate will be generated within 10 minutes.
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Video Area -->
+        <main class="video-main">
+            <div class="centered-video-wrapper">
+                <div class="video-container">
+                    <div id="mainPlayer"></div>
+                </div>
+
+                <div class="video-info">
+                    <div class="video-header-row">
+                        <div>
+                            <h1 class="video-title" id="videoTitle" style="margin-bottom: 0.5rem;">Loading Lesson...
+                            </h1>
+                        </div>
+                        <button id="markCompleteBtn" onclick="markAsCompleted()" class="mark-complete-btn">
+                            Mark as Complete <i class="bi bi-check-circle"></i>
+                        </button>
+                    </div>
+
+                    <!-- Completion Announcement Section -->
+                    <div id="bottomCertSection" class="cert-announcement">
+                        <div style="margin-bottom: 1.5rem;">
+                            <i class="bi bi-patch-check-fill" style="font-size: 3.5rem; color: #28a745;"></i>
+                        </div>
+                        <h2 style="color: white; font-size: 2rem; margin-bottom: 0.5rem;">Course Completed!</h2>
+                        <p style="color: #ccc; font-size: 1.1rem; margin-bottom: 2rem;">
+                            Great job! Your certificate is being processed and will be ready within 10 minutes.
+                        </p>
+                        <button onclick="openCertificateForm()" class="get-cert-btn"
+                            style="width: auto; padding: 1rem 2rem; display: inline-flex;">
+                            <i class="bi bi-pencil-square"></i> Fill Details for Certificate
+                        </button>
+                    </div>
+
+                    <div class="comments-section">
+                        <div id="commentsList">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <!-- Certificate Modal placeholder if needed, though removed -->
+
+    <script>
+        // Progress State (Will be updated dynamically)
+        let COURSE_KEY = 'progress-default';
+        let completedVideos = [];
+        let player; // YouTube User Player Instance
+        let progressInterval;
+        let isVideoCompleted = false;
+        let activeLessons = [];
+        let isDataReady = false;
+        let isApiReady = false;
+
+        // Get user name
+        let signedUser = null;
+        try {
+            signedUser = JSON.parse(localStorage.getItem('loggedInUser'));
+        } catch (e) {
+            console.error("Error parsing loggedInUser:", e);
+        }
+        const userName = signedUser ? (signedUser.fullname || signedUser.name || signedUser.username || signedUser.firstName || signedUser.email || 'Valued Student') : 'Valued Student';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                // Check auth and approval
+                const loggedUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
+                if (!loggedUser) {
+                    alert("Please log in to access this course.");
+                    sessionStorage.setItem('authAction', 'login');
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                let registeredUsers = [];
+                try {
+                    registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+                } catch (e) {
+                    console.error("Error parsing registeredUsers:", e);
+                }
+                const user = registeredUsers.find(u => (u.email || '').toLowerCase() === (loggedUser.email || '').toLowerCase());
+
+                // Explicitly update global userName from the latest session data
+                window.userName = user ? (user.fullname || user.name || user.username || user.email || 'Valued Student') : (loggedUser.fullname || loggedUser.name || 'Valued Student');
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const courseName = urlParams.get('course');
+
+                // Show course name in title immediately so user knows something happened
+                if (courseName) {
+                    document.getElementById('videoTitle').innerText = "Loading " + courseName + "...";
+                }
+
+                const hasAccess = user && user.purchasedCourses && user.purchasedCourses.some(c => c.toLowerCase() === (courseName || '').toLowerCase());
+
+                if (!hasAccess) {
+                    alert("Access Denied: You haven't purchased this course yet or your purchase is pending approval.");
+                    window.location.href = 'teach_dashboard.html';
+                    return;
+                }
+
+                // Update Course Key and Load Progress (User-Specific)
+                const userIdentifier = (loggedUser.email || 'guest').replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+                COURSE_KEY = `progress-${userIdentifier}-${(courseName || 'default').replace(/\s+/g, '-').toLowerCase()}`;
+
+                // Migration: Check for legacy progress (non-user-specific) and migrate once
+                const legacyKey = `progress-${(courseName || 'default').replace(/\s+/g, '-').toLowerCase()}`;
+
+                if (!localStorage.getItem(COURSE_KEY) && localStorage.getItem(legacyKey)) {
+                    localStorage.setItem(COURSE_KEY, localStorage.getItem(legacyKey));
+                    const legacyDate = localStorage.getItem('date-' + legacyKey);
+                    if (legacyDate) localStorage.setItem('date-' + COURSE_KEY, legacyDate);
+                }
+
+                completedVideos = JSON.parse(localStorage.getItem(COURSE_KEY)) || [];
+
+                // Data Migration & Sanitization
+                // Ensure all entries are integers to fix potential string/number mismatch issues
+                if (completedVideos.length > 0) {
+                    // Convert all to numbers and remove duplicates/NaNs
+                    completedVideos = [...new Set(completedVideos.map(v => parseInt(v, 10)).filter(n => !isNaN(n)))];
+                    localStorage.setItem(COURSE_KEY, JSON.stringify(completedVideos));
+                }
+
+                // Setup Course Specific Lessons
+                const courseLessons = {
+                    "default": [{
+                        id: "zOjov-2OZ0E", title: "Part 1 | Introduction to Course", duration: "10 min"
+                    }
+
+                        ,
+                    {
+                        id: "8dWL3wF_OMw", title: "Part 2 | Fundamentals & Basics", duration: "15 min"
+                    }
+
+                        ,
+                    {
+                        id: "W6NZfCO5SIk", title: "Part 3 | Core Concepts & Design", duration: "20 min"
+                    }
+
+                        ,
+                    {
+                        id: "pkjd7hqtqfE", title: "Part 4 | Technical Implementation", duration: "22 min"
+                    }
+
+                        ,
+                    {
+                        id: "hdI2bqOjy3c", title: "Part 5 | Project Review & Summary", duration: "18 min"
+                    }
+
+                    ],
+                    "OPTICAL CHARACTER RECOGNITION": [{
+                        id: "kYLjHmr6WrY", title: "Complete Course | OPTICAL CHARACTER RECOGNITION", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "DIGIT RECOGNITION USING GUI": [{
+                        id: "5omBjTaYunU", title: "Complete Course | DIGIT RECOGNITION USING GUI", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "LEAF DETECTION & DISEASE IDENTIFICATION USING DEEP LEARNING": [{
+                        id: "a_xvkb7ajPg", title: "Complete Course | LEAF DETECTION & DISEASE IDENTIFICATION", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "DIABETES PREDICTION USING AI": [{
+                        id: "i2L1OC8FvrE", title: "Complete Course | DIABETES PREDICTION USING AI", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "WEB ADVERTISEMENT OPTIMIZATION USING ML": [{
+                        id: "GEDrNzXbQtc", title: "Complete Course | WEB ADVERTISEMENT OPTIMIZATION USING ML", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "CHARACTER RECOGNITION USING ML": [{
+                        id: "dFczrty4jLI", title: "Complete Course | CHARACTER RECOGNITION USING ML", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "TOKEN IDENTIFICATION USING NLP": [{
+                        id: "3wAGzNPM-fA", title: "Complete Course | TOKEN IDENTIFICATION USING NLP", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "ADVERTISEMENT SALE PREDICTION USING ML": [{
+                        id: "ReWmXNbcwYs", title: "Complete Course | ADVERTISEMENT SALE PREDICTION USING ML", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "ATTENDANCE SYSTEM USING AI": [{
+                        id: "ePVkdvy1wYg", title: "Complete Course | ATTENDANCE SYSTEM USING AI", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "MARKET ANALYSIS USING ML": [{
+                        id: "70JNGg1oGLA", title: "Complete Course | MARKET ANALYSIS USING ML", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "ARDUINO UNO BASICS & BEYOND": [{
+                        id: "tOWIfDIOHGY", title: "Complete Course | ARDUINO UNO BASICS & BEYOND", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "LICENSE PLATE RECOGNITION USING AI": [{
+                        id: "W6LOA3s5oyI", title: "Complete Course | LICENSE PLATE RECOGNITION USING AI", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "PCB DESIGNING": [{
+                        id: "X6OvGDVYWQ8", title: "Complete Course | PCB DESIGNING", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "IMAGE CLASSIFICATION USING DEEP LEARNING": [{
+                        id: "eerK4gs26Bw", title: "Complete Course | IMAGE CLASSIFICATION USING DEEP LEARNING", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "BREAST CANCER PREDICTION USING ML IN THE BIOMEDICAL FIELD": [{
+                        id: "xKPKbeSbcvs", title: "Complete Course | BREAST CANCER PREDICTION", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "DEEP LEARNING ALGORITHMS": [{
+                        id: "NZcdfk_B8hg", title: "Complete Course | DEEP LEARNING ALGORITHMS", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "AI based Gesture Recognition in Embedded Systems": [{
+                        id: "Ft9Ue-bemfU", title: "Complete Course | AI based Gesture Recognition", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "ROAD SIGN DETECTION USING AI": [{
+                        id: "GWqbabLvDDA", title: "Complete Course | ROAD SIGN DETECTION USING AI", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "DIGITAL IMAGE PROCESSING USING MATLAB": [{
+                        id: "CikGXVUTCRg", title: "Complete Course | DIGITAL IMAGE PROCESSING USING MATLAB", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "OBJECT DETECTION USING AI": [{
+                        id: "0RNykvAOrYc", title: "Complete Course | OBJECT DETECTION USING AI", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "MATLAB": [{
+                        id: "XZqzmgy4bGw", title: "Complete Course | MATLAB", duration: "1 hr"
+                    }
+
+                    ],
+                    "HOW TO DETECT MOVING OBJECT USING AI": [{
+                        id: "n4Q4JNKTf1I", title: "Complete Course | HOW TO DETECT MOVING OBJECT USING AI", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "PRINTED CIRCUIT BOARD (PCB) DESIGNING": [{
+                        id: "VtQUrFpNb-E", title: "Complete Course | PRINTED CIRCUIT BOARD (PCB) DESIGNING", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "HEIGHT PREDICTION USING MACHINE LEARNING": [{
+                        id: "u_E82y06p5s", title: "Complete Course | HEIGHT PREDICTION USING MACHINE LEARNING", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "AI Based Gesture Recognition in Embedded Systems": [{
+                        id: "29PyEx8uGr4", title: "Complete Course | AI Based Gesture Recognition", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "HOW TO PREDICT THE HOUSE PRICE USING MACHINE LEARNING": [{
+                        id: "Ip5JvbDF1q0", title: "Complete Course | HOW TO PREDICT THE HOUSE PRICE", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "INTERNET OF THINGS": [{
+                        id: "FBRNu7gO_90", title: "Complete Course | INTERNET OF THINGS", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "CAR DETECTION USING AI": [{
+                        id: "Dp4CYJXlc1w", title: "Complete Course | CAR DETECTION USING AI", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "MACHINE LEARNING TO PREDICT THE EXAM MARK": [{
+                        id: "YRRHxeHqNUI", title: "Complete Course | USE ML TO PREDICT EXAM MARK", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "MACHINE LEARNING TO PREDICT WHO SURVIVED THE TITANIC": [{
+                        id: "iN2GN2ct2b8", title: "Complete Course | ML PREDICT TITANIC SURVIVOR", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "MACHINE LEARNIING HOW TO PREDICT THE SALARY EASILY": [{
+                        id: "osENgIVTllE", title: "Complete Course | PREDICT SALARY EASILY", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "AI ON CAMERA : FACE DETECTION AND TRACKING USING PYTHON": [{
+                        id: "yYT8doC85rc", title: "Complete Course | AI ON CAMERA : FACE DETECTION", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "SNAKE GAME USING AI": [{
+                        id: "yb6Q7Kt1iTA", title: "Complete Course | SNAKE GAME USING AI", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "OBJECT DETECTION USING COLOR": [{
+                        id: "yzGPk3puh_o", title: "Complete Course | OBJECT DETECTION USING COLOR", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "MATPLOTLIB USING FOR DATA VISUALIZATION IN MACHINE LEARNING": [{
+                        id: "pCGP6cuNOGw", title: "Complete Course | MATPLOTLIB DATA VISUALIZATION", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "EMAIL SPAM DETECTION": [{
+                        id: "TM614OM6-BQ", title: "Complete Course | EMAIL SPAM DETECTION", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "NATURAL LANGUAGE PROCESSING WEBINAR": [{
+                        id: "eTQOuM9Q3V0", title: "Complete Course | NLP WEBINAR", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "MACHINE LEARNING": [{
+                        id: "x3oJxbQgBMg", title: "Complete Course | MACHINE LEARNING", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "REAL TIME DROWSINESS DETECTION SYSTEM": [{
+                        id: "Tq_nqsma1uM", title: "Complete Course | DROWSINESS DETECTION SYSTEM", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "HAND GESTURE RECOGNITION": [{
+                        id: "fdOph75NFec", title: "Complete Course | HAND GESTURE RECOGNITION", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "REAL TIME FACE RECOGNITION": [{
+                        id: "fHMcsjenvrA", title: "Complete Course | REAL TIME FACE RECOGNITION", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "Hands On Training In Computer vision": [{
+                        id: "TR9QTqhoEmY", title: "Complete Course | Training In Computer vision", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "HANDS ON TRAINING IN PHYTON": [{
+                        id: "E-F-U51gxTw", title: "Complete Course | HANDS ON TRAINING IN PYTHON", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "ARTIFICIAL INTELLIGENCE WEBINAR": [{
+                        id: "Bhn1iXS6NUw", title: "Complete Course | ARTIFICIAL INTELLIGENCE WEBINAR", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "Real Time Facial Emotion Recognition": [{
+                        id: "LFujYLP-FTw", title: "Complete Course | Real Time Facial Emotion Recognition", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "Deep Learning Webinar": [{
+                        id: "rVPiSo5I248", title: "Complete Course | Deep Learning Webinar", duration: "1 hr"
+                    }
+
+                    ],
+
+
+                    "HEART DISEASE PREDICTION USING ML": [{
+                        id: "mwCupsW2VE8", title: "Complete Course | HEART DISEASE PREDICTION USING ML", duration: "1 hr"
+                    }],
+                    "COMPUTER VISION WITH PYTHON": [{
+                        id: "N81PCpADwKQ", title: "Complete Course | COMPUTER VISION WITH PYTHON", duration: "1 hr"
+                    }]
+                }
+
+                    ;
+
+                // Get lessons for current course (case-insensitive)
+                // activeLessons is now global
+
+                // Check LocalStorage for Dynamic Overrides (Admin Updates)
+                let systemCourses = [];
+                try {
+                    systemCourses = JSON.parse(localStorage.getItem('systemCourses')) || [];
+                } catch (e) {
+                    console.error("Error parsing systemCourses:", e);
+                    systemCourses = [];
+                }
+                // Clean up course name for matching
+                const targetCourseName = (courseName || '').toLowerCase().trim();
+                const dynamicCourse = systemCourses.find(c => (c.title || '').toLowerCase().trim() === targetCourseName);
+
+                if (dynamicCourse) {
+                    if (Array.isArray(dynamicCourse.videoParts) && dynamicCourse.videoParts.length > 0) {
+                        // Multi-Part Dynamic Course
+                        // Filter empty/null entries first
+                        activeLessons = dynamicCourse.videoParts
+                            .filter(v => v && v.trim().length > 0)
+                            .map((vid, i) => {
+                                let vidId = vid.trim();
+                                // Support full URL or raw ID (11 chars)
+                                const urlMatch = vidId.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
+                                if (urlMatch && urlMatch[1]) {
+                                    vidId = urlMatch[1];
+                                }
+                                // Else assume it might be a raw ID if it looks like one, or let the player try to handle it.
+
+                                return {
+                                    id: vidId,
+                                    title: `Part ${i + 1} | ${dynamicCourse.title}`,
+                                    duration: "Lesson " + (i + 1)
+                                };
+                            });
+                    }
+                    else if (dynamicCourse.video && dynamicCourse.video.trim() !== '') {
+                        // Single Video Dynamic Course
+                        let vidId = dynamicCourse.video.trim();
+                        const urlMatch = vidId.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
+                        if (urlMatch && urlMatch[1]) vidId = urlMatch[1];
+
+                        activeLessons = [{
+                            id: vidId,
+                            title: `Complete Course | ${dynamicCourse.title}`,
+                            duration: "1 hr"
+                        }];
+                    }
+                }
+
+
+
+                // Fallback to hardcoded list if no lessons found in dynamic course OR no dynamic course found
+                if (activeLessons.length === 0 && targetCourseName && targetCourseName !== 'default course') {
+                    // Try exact match first
+                    const foundKey = Object.keys(courseLessons).find(key => key.toLowerCase().trim() === targetCourseName);
+                    if (foundKey) {
+                        activeLessons = courseLessons[foundKey];
+                    } else {
+                        // Try partial match (case-insensitive)
+                        const partialKey = Object.keys(courseLessons).find(key =>
+                            targetCourseName.includes(key.toLowerCase().trim()) ||
+                            key.toLowerCase().trim().includes(targetCourseName)
+                        );
+                        if (partialKey) activeLessons = courseLessons[partialKey];
+                    }
+                }
+
+                // FINAL FALLBACK: If still empty, load default course so the screen isn't broken
+                if (!activeLessons || activeLessons.length === 0) {
+                    console.warn("Falling back to default course for:", targetCourseName);
+                    activeLessons = courseLessons["default"];
+                }
+
+                // Absolute fallback for demo/error purposes
+                if (!activeLessons || activeLessons.length === 0) {
+                    // If no lessons found, show 'Coming Soon' placeholder or similar, or default
+                    // activeLessons = courseLessons["default"]; // OPTIONAL: Only if you want a default video for everything
+                    // Better to show empty state or specific error
+                }
+
+                // Render Lessons list
+                const lessonsContainer = document.getElementById('lessonList');
+                lessonsContainer.innerHTML = '';
+
+                if (!activeLessons || activeLessons.length === 0) {
+                    document.getElementById('videoTitle').innerText = "Processing Course Content...";
+                    // Optionally add a visual message in the list
+                    lessonsContainer.innerHTML = '<li style="padding:1rem; color:#888;">No videos available for this course yet.</li>';
+                }
+
+                // Update Parts Indicator
+                const partsIndicator = document.getElementById('coursePartsIndicator');
+
+                if (activeLessons.length > 1) {
+                    partsIndicator.innerText = `Part 1 to ${activeLessons.length
+                        }
+
+                            `;
+                    partsIndicator.style.display = 'block';
+                }
+
+                else {
+                    partsIndicator.style.display = 'none';
+                }
+
+                activeLessons.forEach((lesson, index) => {
+                    const li = document.createElement('li');
+                    const isCompleted = completedVideos.includes(index);
+                    // A lesson is unlocked if it's the first one OR the one before it is completed
+                    const isUnlocked = index === 0 || completedVideos.includes(index - 1);
+
+                    li.className = `lesson-item ${index === 0 ? 'active' : ''
+                        }
+
+                                ${isCompleted ? 'completed' : ''
+                        }
+
+                                ${!isUnlocked ? 'locked' : ''
+                        }
+
+                                `;
+                    li.dataset.id = lesson.id;
+                    li.dataset.index = index;
+
+                    li.onclick = function () {
+                        // Re-check lock status on click
+                        let currentCompleted = JSON.parse(localStorage.getItem(COURSE_KEY)) || [];
+
+                        // Sanitize to numbers to ensure type matching with index
+                        currentCompleted = currentCompleted.map(v => parseInt(v, 10));
+
+                        // Check against index - 1 (Previous lesson must be completed)
+                        const canPlay = index === 0 || currentCompleted.includes(index - 1);
+
+                        if (canPlay) {
+                            playVideo(lesson.id, lesson.title, li);
+                        } else {
+                            alert("Please complete the previous lesson to unlock this one.");
+                        }
+                    };
+
+                    li.innerHTML = ` <i class="bi ${isCompleted ? 'bi-check-circle-fill' : isUnlocked ? (index === 0 ? 'bi-play-circle-fill' : 'bi-play-circle') : 'bi-lock-fill'} lesson-status" ></i> <div> <div style="font-weight: 500; font-size: 0.9rem;" >${lesson.title
+                        }
+
+                                </div> <span style="font-size: 0.8rem; color: #666;" >${lesson.duration
+                        }
+
+                                </span> </div> `;
+                    lessonsContainer.appendChild(li);
+
+                    if (index === 0) {
+                        // Initial video load is now handled by onYouTubeIframeAPIReady or manual call if API is ready
+                        // We store the initial ID to load it when player is ready
+                        window.initialVideoId = lesson.id;
+                        window.initialVideoTitle = lesson.title;
+                        window.initialElement = li;
+                    }
+                });
+
+                // Dynamic Course Handling
+                if (courseName) {
+                    const header = document.getElementById('courseNameHeader');
+                    if (header) header.textContent = courseName;
+
+                    const certStrong = document.querySelector('.cert-course strong');
+                    if (certStrong) certStrong.textContent = courseName;
+
+                    // Update page title too
+                    document.title = `${courseName} | Indian Info Tech`;
+                }
+
+                // Proactive API check in case event didn't fire
+                if (!isApiReady && window.YT && window.YT.Player) {
+                    console.log("Proactive YT API detection triggered.");
+                    isApiReady = true;
+                }
+
+                // Initial check of progress - small delay to ensure DOM is fully ready
+                setTimeout(updateUIProgress, 50);
+
+                // Setup initial active video view count
+                randomizeViews();
+
+                isDataReady = true;
+                tryInitPlayer();
+
+                // Safety Timeout: If player logic hangs, force a retry or error message
+                setTimeout(() => {
+                    const titleText = (document.getElementById('videoTitle').innerText || "").trim();
+                    const playerDiv = document.getElementById('mainPlayer');
+
+                    // broader stuck detection (matches "Loading Course Name...", "Processing...", "Loading Lesson...")
+                    const isStuck = titleText.startsWith("Loading ") ||
+                        titleText === "Processing Course Content..." ||
+                        titleText === "Loading Lesson...";
+
+                    if (isStuck && activeLessons.length > 0) {
+                        console.warn("Player initialization timed out. Retrying recovery...");
+
+                        // 1. Force title update if data is there
+                        if (activeLessons[0]) {
+                            document.getElementById('videoTitle').innerText = activeLessons[0].title;
+                        }
+
+                        // 2. Force re-init attempt if API is ready
+                        if (isApiReady) {
+                            tryInitPlayer();
+                        } else if (window.YT && window.YT.Player) {
+                            isApiReady = true;
+                            tryInitPlayer();
+                        } else {
+                            console.error("YouTube API failed to load in time.");
+                            document.getElementById('videoTitle').innerText += " (Check Connection)";
+                        }
+                    }
+                }, 4000); // 4 seconds is safer
+
+                // Periodically check if player is initialized and activeLessons are rendered
+                const recoveryInterval = setInterval(() => {
+                    const titleText = (document.getElementById('videoTitle').innerText || "").trim();
+                    const isStuck = titleText.startsWith("Loading ") ||
+                        titleText === "Processing Course Content..." ||
+                        titleText === "Loading Lesson...";
+
+                    if (isStuck && activeLessons.length > 0) {
+                        console.log("Recovery Loop: Attempting init...");
+                        document.getElementById('videoTitle').innerText = activeLessons[0].title;
+
+                        if (!isApiReady && window.YT && window.YT.Player) isApiReady = true;
+                        if (isApiReady) tryInitPlayer();
+                    }
+
+                    // Once player is active (it becomes an iframe or has methods), stop interval
+                    const playerIframe = document.querySelector('#mainPlayer iframe');
+                    if (playerIframe || (player && typeof player.loadVideoById === 'function')) {
+                        clearInterval(recoveryInterval);
+                    }
+                }, 2000);
+
+            } catch (error) {
+                console.error("CRITICAL UI ERROR:", error);
+                document.getElementById('videoTitle').innerText = "System Error: " + error.message;
+                document.getElementById('videoTitle').style.color = "red";
+            }
+        });
+
+        // --- YouTube API Functions ---
+        function onYouTubeIframeAPIReady() {
+            isApiReady = true;
+            tryInitPlayer();
+        }
+
+        function onPlayerReady(event) {
+            // Player is ready
+            startProgressTracking();
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.ENDED) {
+                handleVideoEnd();
+            }
+
+            else if (event.data == YT.PlayerState.PLAYING) {
+                startProgressTracking();
+            }
+        }
+
+        function startProgressTracking() {
+            if (progressInterval) clearInterval(progressInterval);
+
+            progressInterval = setInterval(() => {
+                if (player && player.getCurrentTime) {
+                    const duration = player.getDuration();
+                    const currentTime = player.getCurrentTime();
+
+                    if (duration > 0) {
+                        const percent = (currentTime / duration) * 100;
+                        updateProgressBar(percent);
+
+                        // Fallback check if it's very close to end
+                        if (percent >= 99.5) {
+                            handleVideoEnd();
+                        }
+                    }
+                }
+            }
+
+                , 500); // Check every 500ms
+        }
+
+        function handleVideoEnd() {
+            if (isVideoCompleted) return;
+            isVideoCompleted = true;
+            updateProgressBar(100);
+
+            // DO NOT auto-mark as complete. User must click the button.
+            // Just update UI to prompt user?
+            const btn = document.getElementById('markCompleteBtn');
+            if (btn && !btn.disabled) {
+                btn.innerHTML = 'Click to Mark Complete <i class="bi bi-check-circle"></i>';
+                btn.classList.add('pulse-animation'); // Optional visual cue
+            }
+        }
+
+        function updateProgressBar(percentage) {
+            // Cap at 100%
+            const displayPercent = Math.min(100, Math.max(0, percentage));
+
+            const fill = document.querySelector('.progress-fill');
+            const textDiv = document.getElementById('courseProgressText');
+
+            if (fill) fill.style.width = `${displayPercent}%`;
+            if (textDiv) {
+                textDiv.classList.add('active');
+                textDiv.innerText = `${Math.floor(displayPercent)}% Complete`;
+            }
+        }
+
+        function playVideo(id, title, element) {
+
+            // Find element by data-id if not provided
+            if (!element) {
+                element = document.querySelector(`.lesson-item[data-id="${id}"]`);
+            }
+
+            // Reset completion state for new video
+            isVideoCompleted = false;
+            updateProgressBar(0);
+
+            // RESET BUTTON STATE IMMEDIATELY
+            const btn = document.getElementById('markCompleteBtn');
+            if (btn) {
+                btn.innerHTML = 'Mark as Complete <i class="bi bi-check-circle"></i>';
+                btn.style.backgroundColor = '#00aa6c';
+                btn.style.color = 'white';
+                btn.disabled = false;
+                btn.classList.remove('pulse-animation');
+            }
+
+            if (player && typeof player.loadVideoById === 'function') {
+                player.loadVideoById(id);
+            } else {
+                window.initialVideoId = id;
+                tryInitPlayer();
+            }
+
+            document.getElementById('videoTitle').innerText = title;
+            randomizeViews();
+
+            // Update active state in UI
+            document.querySelectorAll('.lesson-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            if (element) {
+                element.classList.add('active');
+                // Ensure index is set correctly
+                // element.dataset.index might be string
+            }
+
+            // Small delay to let UI settle before checking status
+            setTimeout(checkCurrentVideoStatus, 50);
+        }
+
+        function getCurrentVideoId() {
+            if (player && player.getVideoData) {
+                return player.getVideoData().video_id;
+            }
+            return '';
+        }
+
+        function checkCurrentVideoStatus() {
+            const activeItem = document.querySelector('.lesson-item.active');
+            if (!activeItem) return;
+
+            const idx = parseInt(activeItem.dataset.index, 10);
+            const btn = document.getElementById('markCompleteBtn');
+
+            // Ensure we read consistently
+            const completed = JSON.parse(localStorage.getItem(COURSE_KEY)) || [];
+            const isDone = completed.some(v => parseInt(v, 10) === idx);
+
+            if (isDone) {
+                btn.innerHTML = 'Completed <i class="bi bi-check-circle-fill"></i>';
+                btn.style.backgroundColor = '#333';
+                btn.style.color = '#00aa6c';
+                btn.disabled = true;
+            } else {
+                btn.innerHTML = 'Mark as Complete <i class="bi bi-check-circle"></i>';
+                btn.style.backgroundColor = '#00aa6c';
+                btn.style.color = 'white';
+                btn.disabled = false;
+            }
+        }
+
+        function markAsCompleted() {
+            const activeItem = document.querySelector('.lesson-item.active');
+            if (!activeItem) return;
+
+            const idx = parseInt(activeItem.dataset.index, 10);
+
+            let completed = JSON.parse(localStorage.getItem(COURSE_KEY)) || [];
+            // Sanitize
+            if (!completed.some(v => parseInt(v, 10) === idx)) {
+                completed.push(idx);
+                localStorage.setItem(COURSE_KEY, JSON.stringify(completed));
+
+                // Check for completion immediately to save date
+                const items = document.querySelectorAll('.lesson-item');
+
+                // Use Set size for accurate count
+                const uniqueCompleted = new Set(completed.map(v => parseInt(v, 10)));
+
+                if (uniqueCompleted.size === items.length) {
+                    const now = new Date();
+                    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                    const dateStr = `${months[now.getMonth()]} ${now.getDate()} ${now.getFullYear()}`;
+                    localStorage.setItem('date-' + COURSE_KEY, dateStr);
+                }
+
+                fireConfettiSide();
+            }
+
+            updateUIProgress();
+            checkCurrentVideoStatus();
+
+            // Check if this was the last video
+            const items = document.querySelectorAll('.lesson-item');
+            if (activeItem !== items[items.length - 1]) {
+                // Auto-play next ONLY here, after user clicks button
+                setTimeout(playNextVideo, 1000); // Slight delay for UX
+            }
+        }
+
+        function openCertificateForm() {
+            const googleFormUrl = "https://forms.gle/dcJVVEY2Z4aeHSu67";
+            window.open(googleFormUrl, '_blank');
+        }
+
+        function playNextVideo() {
+            const activeItem = document.querySelector('.lesson-item.active');
+            if (activeItem) {
+                const nextItem = activeItem.nextElementSibling;
+                if (nextItem && nextItem.classList.contains('lesson-item')) {
+                    // Click triggers playVideo which triggers proper reset
+                    nextItem.click();
+                    nextItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        }
+
+        function updateUIProgress() {
+            const freshCompleted = JSON.parse(localStorage.getItem(COURSE_KEY)) || [];
+            completedVideos = [...new Set(freshCompleted.map(v => parseInt(v, 10)).filter(n => !isNaN(n)))];
+
+            const items = document.querySelectorAll('.lesson-item');
+            const total = items.length;
+            let count = 0;
+
+            items.forEach((item, index) => {
+                const icon = item.querySelector('.lesson-status');
+                const isCompleted = completedVideos.includes(index);
+
+                if (isCompleted) {
+                    item.classList.add('completed');
+                    if (icon) icon.className = 'bi bi-check-circle-fill lesson-status';
+                    count++;
+                } else {
+                    item.classList.remove('completed');
+                }
+
+                const nextItem = items[index + 1];
+                if (nextItem) {
+                    // Unlock next if current is done
+                    const isUnlocked = isCompleted;
+                    if (isUnlocked) {
+                        nextItem.classList.remove('locked');
+                        const nextIcon = nextItem.querySelector('.lesson-status');
+                        if (nextIcon && nextIcon.classList.contains('bi-lock-fill')) {
+                            nextIcon.className = 'bi bi-play-circle lesson-status';
+                        }
+                    } else {
+                        nextItem.classList.add('locked');
+                    }
+                }
+            });
+
+            const sidebarCert = document.getElementById('sidebarCertSection');
+            const bottomCert = document.getElementById('bottomCertSection');
+            const isComplete = (count === total && total > 0);
+
+            if (sidebarCert) sidebarCert.style.display = isComplete ? 'block' : 'none';
+            if (bottomCert) bottomCert.style.display = isComplete ? 'block' : 'none';
+        }
+
+
+
+
+        // --- Try Init Player Logic ---
+        function tryInitPlayer() {
+            // Check if player exists and has the necessary methods
+            const isPlayerValid = player && typeof player.loadVideoById === 'function';
+
+            if (isApiReady && isDataReady && !isPlayerValid && activeLessons.length > 0) {
+                // ... cleanup old player if it was broken ...
+                if (player) {
+                    try { player.destroy(); } catch (e) { }
+                    player = null;
+                }
+
+                // Use initialVideoId if set, otherwise first in activeLessons
+                const videoId = window.initialVideoId || activeLessons[0].id;
+                if (!videoId) return; // Still no video ID?
+
+                player = new YT.Player('mainPlayer', {
+                    height: '100%',
+                    width: '100%',
+                    videoId: videoId,
+                    playerVars: {
+                        'autoplay': 1,
+                        'playsinline': 1,
+                        'rel': 0
+                    },
+                    events: {
+                        'onReady': onPlayerReady,
+                        'onStateChange': onPlayerStateChange
+                    }
+                });
+
+                // Set initial title if we have it, but do NOT override if user already selected something
+                const currentTitle = document.getElementById('videoTitle').innerText;
+                const isTitlePlaceholder = !currentTitle || currentTitle === 'Loading Lesson...' || currentTitle === 'Processing Course Content...' || currentTitle.includes("Loading ");
+
+                if (isTitlePlaceholder) {
+                    if (window.initialVideoTitle) {
+                        document.getElementById('videoTitle').innerText = window.initialVideoTitle;
+                    } else if (activeLessons[0] && activeLessons[0].title) {
+                        document.getElementById('videoTitle').innerText = activeLessons[0].title;
+                    }
+                }
+
+                // Only highlight initial element if no other element is currently active (user didn't click anything yet)
+                if (!document.querySelector('.lesson-item.active')) {
+                    if (window.initialElement) {
+                        window.initialElement.classList.add('active');
+                    } else {
+                        // Try to highlight first element
+                        const firstLi = document.querySelector('.lesson-item');
+                        if (firstLi) firstLi.classList.add('active');
+                    }
+                }
+            }
+        }
+
+        // --- Original / Helper Functions ---
+
+        function toggleSubscribe(btn) {
+            if (btn.innerText === 'Subscribe') {
+                btn.innerText = 'Subscribed';
+                btn.style.background = '#333';
+                btn.style.color = '#aaa';
+            }
+
+            else {
+                btn.innerText = 'Subscribe';
+                btn.style.background = '#cc0000';
+                btn.style.color = 'white';
+            }
+        }
+
+        function likeVideo(btn) {
+            const icon = btn.querySelector('i');
+
+            if (icon.classList.contains('bi-hand-thumbs-up')) {
+                icon.classList.replace('bi-hand-thumbs-up', 'bi-hand-thumbs-up-fill');
+                btn.style.color = 'white';
+            }
+
+            else {
+                icon.classList.replace('bi-hand-thumbs-up-fill', 'bi-hand-thumbs-up');
+                btn.style.color = '#aaa';
+            }
+        }
+
+        function cancelComment() {
+            document.getElementById('commentInput').value = '';
+        }
+
+        function postComment() {
+            const input = document.getElementById('commentInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const commentsList = document.getElementById('commentsList');
+            const newComment = document.createElement('div');
+            newComment.style.cssText = 'display: flex; gap: 1rem; margin-bottom: 1.5rem; animation: fadeIn 0.5s;';
+
+            newComment.innerHTML = ` <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(userName)}&background=random" style="width: 40px; height: 40px; border-radius: 50%;" alt="User" > <div> <div style="color: white; font-weight: bold; font-size: 0.9rem; margin-bottom: 0.25rem;" >${userName}<span style="color: #666; font-weight: normal; font-size: 0.8rem; margin-left: 0.5rem;" >Just now</span></div> <p style="color: #ccc; font-size: 0.95rem;" >${text}</p> <div style="display: flex; gap: 1rem; margin-top: 0.5rem;" > <button class="action-btn" style="font-size: 0.8rem;" ><i class="bi bi-hand-thumbs-up" ></i> 0</button> <button class="action-btn" style="font-size: 0.8rem;" ><i class="bi bi-hand-thumbs-down" ></i></button> <button class="action-btn" style="font-size: 0.8rem;" >Reply</button> </div> </div> `;
+            commentsList.prepend(newComment);
+            input.value = '';
+        }
+
+        // --- Missing Helper Functions to prevent crashes ---
+        function randomizeViews() {
+            // Optional: Placeholder for view count randomization
+            console.log("Views randomized");
+        }
+
+        function fireConfettiSide() {
+            // Optional: Placeholder for success confetti
+            console.log("Confetti fired!");
+        }
+
+    </script>
+    <style>
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .video-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .mark-complete-btn {
+            background-color: #00aa6c;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.2s;
+        }
+
+        .mark-complete-btn:hover {
+            background-color: #008f5b;
+        }
+
+        .mark-complete-btn:disabled {
+            background-color: #444;
+            cursor: not-allowed;
+            color: #888;
+        }
+
+        .lesson-item .bi-check-circle-fill {
+            color: transparent;
+            transition: color 0.3s;
+        }
+
+        .lesson-item.completed .bi-check-circle-fill {
+            color: #00aa6c !important;
+        }
+
+        .lesson-item.locked {
+            opacity: 0.6;
+            cursor: not-allowed !important;
+        }
+
+        .lesson-item.locked:hover {
+            background: transparent !important;
+        }
+    </style>
+</body>
+
+</html>

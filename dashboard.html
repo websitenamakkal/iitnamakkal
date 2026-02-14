@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Indian Info Tech</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="brand">
+            <img src="IIT-Photoroom.png" alt="Indian Info Tech logo">
+        </div>
+        <div class="nav-panel">
+            <div class="auth-links">
+                <button id="logout-btn">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container"
+        style="position: relative; top: 100px; transform: none; left: auto; height: auto; padding: 2rem; text-align: center;">
+        <h1 id="welcome-msg">Welcome, User</h1>
+        <p>You have successfully logged in to your dashboard.</p>
+        <div style="margin-top: 2rem;">
+            <a href="teach_dashboard.html" class="cta-btn"
+                style="text-decoration: none; background: #eb4b11; color: white; padding: 10px 20px; border-radius: 5px;">Go
+                to Course Dashboard</a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
+            if (!loggedInUser) {
+                // Redirect if not logged in
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Display user name
+            document.getElementById('welcome-msg').textContent = `Welcome, ${loggedInUser.fullname}`;
+
+            // Logout logic
+            document.getElementById('logout-btn').addEventListener('click', () => {
+                localStorage.removeItem('loggedInUser');
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+</body>
+
+</html>

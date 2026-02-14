@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Learning | Indian Info Tech</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="responsive.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Great+Vibes&display=swap"
+        rel="stylesheet">
+    <style>
+        .my-courses-header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #222;
+            padding-bottom: 1rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: #111;
+            border-radius: 12px;
+            border: 1px dashed #333;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: #444;
+            margin-bottom: 1rem;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <img src="IIT-Photoroom.png" alt="Indian Info Tech" style="border-radius: 8px;">
+        </div>
+        <ul class="nav-menu">
+            <li><a href="teach_dashboard.html" class="nav-item"><i class="bi bi-house-door"></i>
+                    <span>Dashboard</span></a></li>
+            <li><a href="my_learning.html" class="nav-item active"><i class="bi bi-journal-check"></i> <span>My
+                        Learning</span></a></li>
+            <li><a href="index.html" class="nav-item"><i class="bi bi-box-arrow-left"></i> <span>Logout</span></a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-bar">
+            <div class="user-info">
+                <h1 id="welcomeText">My Courses</h1>
+            </div>
+            <div class="top-actions">
+                <div class="user-profile">
+                    <img src="avatar.jpg" alt="User" id="userAvatar">
+                    <span id="userNameDisplay">Student</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="my-courses-header">
+            <h2>Courses You've Purchased</h2>
+            <p style="color: #888;">Continue where you left off</p>
+        </div>
+
+        <div class="course-grid" id="purchasedCourseGrid">
+            <!-- Dynamic Purchased Courses -->
+        </div>
+
+        <div id="emptyContainer" class="empty-state" style="display: none;">
+            <i class="bi bi-journal-x"></i>
+            <h3>No Courses Found</h3>
+            <p style="color: #666; margin-bottom: 1.5rem;">You haven't purchased or been approved for any courses yet.
+            </p>
+            <a href="teach_dashboard.html" class="cta-btn" style="text-decoration: none; display: inline-block;">Browse
+                Courses</a>
+        </div>
+    </main>
+
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loggedUser = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (!loggedUser) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Sync with registeredUsers to get latest purchased list
+            const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+            const user = registeredUsers.find(u => (u.email || '').toLowerCase().trim() === (loggedUser.email || '').toLowerCase().trim());
+
+            if (!user) {
+                alert("User session invalid. Please log in again.");
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Sync loggedInUser in storage
+            localStorage.setItem('loggedInUser', JSON.stringify(user));
+
+            document.getElementById('userNameDisplay').textContent = user.fullname || user.name || 'Student';
+
+            renderPurchasedCourses(user);
+        });
+
+        function renderPurchasedCourses(user) {
+            let purchasedTitles = user.purchasedCourses || [];
+            if (!Array.isArray(purchasedTitles)) {
+                purchasedTitles = typeof purchasedTitles === 'string' ? [purchasedTitles] : [];
+            }
+
+            // Deduplicate titles to prevent double-showing
+            purchasedTitles = [...new Set(purchasedTitles.map(t => t.trim()))];
+
+            const systemCourses = JSON.parse(localStorage.getItem('systemCourses')) || [];
+            const grid = document.getElementById('purchasedCourseGrid');
+            const empty = document.getElementById('emptyContainer');
+
+            if (purchasedTitles.length === 0) {
+                grid.style.display = 'none';
+                empty.style.display = 'block';
+                return;
+            }
+
+            // Ensure grid is visible and empty state is hidden
+            grid.style.display = 'grid';
+            empty.style.display = 'none';
+
+            grid.innerHTML = '';
+
+            const masterDefaults = [
+                { id: 1, title: 'Full stack development', category: 'Full stack development', thumb: 'full stack development.jpg', lessons: 20, page: 'course_details.html' },
+                { id: 2, title: 'Web Development', category: 'web development', thumb: 'web-development.avif', lessons: 13, page: 'web_development_course-details.html' },
+                { id: 3, title: 'AI developer', category: 'AI developer', thumb: 'AI.avif', lessons: 22, page: 'AI_development_course-details.html' },
+                { id: 4, title: 'Mobile app development', category: 'mobile app development', thumb: 'mobile-app-dev.avif', lessons: 10, page: 'mobile_app_development_course-details.html' },
+                { id: 5, title: 'UI UX development', category: 'UI UX development', thumb: 'UI.jpg', lessons: 10, page: 'ui_ux_development_course-details.html' },
+                { id: 6, title: 'meachine learning', category: 'meachine learning', thumb: 'ML.jpg', lessons: 10, page: 'meachine_learning_course-details.html' },
+                { id: 7, title: 'open CV', category: 'open CV', thumb: 'open-cv-1.avif', lessons: 13, page: 'openCV_course-details.html' },
+                { id: 8, title: 'Python', category: 'python', thumb: 'python-11.avif', lessons: 17, page: 'python_course-details.html' },
+                { id: 9, title: 'Java', category: 'Java', thumb: 'java-11.avif', lessons: 15, page: 'java_course-details.html' },
+                { id: 10, title: 'C++', category: 'C++', thumb: 'C++1.jpg', lessons: 8, page: 'c_plus_plus_course-details.html' },
+                { id: 11, title: 'C programming', category: 'C', thumb: 'C-11.avif', lessons: 10, page: 'c_course-details.html' },
+                { id: 12, title: 'Arduino', category: 'Arduino', thumb: 'arduino-1.jpg', lessons: 13, page: 'arduino_course-details.html' },
+                { id: 13, title: 'Embaededd system', category: 'Embaededd system', thumb: 'Embedded-1.jpg', lessons: 10, page: 'embaededd_system_course-details.html' },
+                { id: 14, title: 'Robotics', category: 'Robotics', thumb: 'Robotic-1.avif', lessons: 10, page: 'robotics_course-details.html' },
+                { id: 15, title: 'IOT', category: 'IOT', thumb: 'Iot-1.jpg', lessons: 10, page: 'iot_course-details.html' }
+            ];
+
+            // Combined pool for lookup: defaults + custom admin ones
+            let lookupPool = [...masterDefaults];
+            systemCourses.forEach(sc => {
+                if (!masterDefaults.some(md => md.title.toLowerCase() === (sc.title || '').toLowerCase())) {
+                    lookupPool.push(sc);
+                }
+            });
+
+            // Map user's purchased titles to objects in the pool
+            // Ensure we show ALL purchased titles, even if not found in lookupPool (fallback)
+            const purchasedCourses = purchasedTitles.map(title => {
+                const found = lookupPool.find(c => (c.title || '').toLowerCase().trim() === title.toLowerCase().trim());
+                if (found) return found;
+
+                // Fallback course object if not found in pool
+                return {
+                    title: title,
+                    category: 'General',
+                    thumb: 'laptop.webp',
+                    lessons: 10,
+                    page: 'course_details.html'
+                };
+            });
+
+            purchasedCourses.forEach(course => {
+                const article = document.createElement('article');
+                article.className = 'course-card';
+                article.style.cursor = 'pointer';
+
+                // Check Progress (User-Specific)
+                const userIdentifier = (user.email || 'guest').replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+                const courseKey = `progress-${userIdentifier}-${(course.title || 'default').replace(/\s+/g, '-').toLowerCase()}`;
+
+                // Check for legacy progress if user-specific not found
+                let completedVids = JSON.parse(localStorage.getItem(courseKey));
+                if (!completedVids) {
+                    const legacyKey = `progress-${(course.title || 'default').replace(/\s+/g, '-').toLowerCase()}`;
+                    completedVids = JSON.parse(localStorage.getItem(legacyKey)) || [];
+                }
+
+                const totalLessons = course.lessons || 10;
+                const isCompleted = completedVids.length >= totalLessons;
+
+                article.onclick = () => {
+                    window.location.href = `${course.page}?course=${encodeURIComponent(course.title)}`;
+                };
+
+                article.innerHTML = `
+                    <div style="position: relative;">
+                        <img src="${course.thumb || 'laptop.webp'}" class="course-thumb" alt="${course.title}">
+                        <div style="position: absolute; top: 10px; right: 10px; background: #00aa6c; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold;">${isCompleted ? 'COMPLETED' : 'ENROLLED'}</div>
+                    </div>
+                    <div class="course-info">
+                        <span class="course-tag">${course.category || 'General'}</span>
+                        <h3 class="course-title">${course.title}</h3>
+                        <div class="course-meta">
+                            <div class="lesson-info">
+                                <i class="bi bi-play-circle-fill play-icon"></i>
+                                <span>${totalLessons} Lessons</span>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem; width: 100%; margin-top: 0.5rem;">
+                                ${isCompleted ? `
+                                    <button class="buy-btn" onclick="event.stopPropagation(); openCertificateForm()" style="background: #28a745; color: white; border: none; flex: 1; font-size: 0.7rem; padding: 8px;">
+                                        <i class="bi bi-award-fill"></i> certificate will be generated within 10 minutes.
+                                    </button>
+                                ` : `
+                                    <span style="color: #00aa6c; font-weight: 600; font-size: 0.8rem;">START LEARNING &rarr;</span>
+                                `}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(article);
+            });
+        }
+
+
+        function openCertificateForm() {
+            const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfrnyS-WzJIn8E8V_fEx3O6k8_YIDYq89t99T6LzU4qYf-oWg/viewform?usp=header";
+            window.open(googleFormUrl, '_blank');
+        }
+    </script>
+</body>
+
+</html>

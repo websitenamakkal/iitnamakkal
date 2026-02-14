@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About</title>
+  <link rel="icon" type="image/jpeg" href="IIT-icon.png" />
+  <link rel="shortcut icon" type="image/jpeg" href="IIT-Photoroom.jpg" />
+  <link rel="apple-touch-icon" href="IIT-icon.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="brand">
+      <img src="IIT-Photoroom.png" alt="Indian Info Tech logo">
+    </div>
+    <button class="nav-toggle" aria-label="Toggle navigation"><i class="bi bi-list"></i></button>
+    <div class="nav-panel">
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="products.html">Products</a>
+        <a href="mou-section.html">MOU</a>
+        <div class="explore-dropdown">
+          <button class="explore-toggle" type="button">
+            <!-- <span class="menu-icon student"></span> -->
+            Students Corner
+            <span class="chevron"><i class="bi bi-caret-up-fill"></i></span>
+          </button>
+          <div class="explore-menu">
+            <div class="menu-item has-child">
+              <div class="menu-label">
+                <!-- <span class="menu-icon download"></span> -->
+                <button
+                  style="border: none; background: none; font-weight: bold; font-size: 16px; color: rgb(77, 75, 75);"
+                  onclick="window.location.href='teach_dashboard.html'">Courses</button>
+              </div>
+            </div>
+            <div class="menu-item has-child">
+              <div class="menu-label">
+                <!-- <span class="menu-icon share"></span> -->
+                Projects
+              </div>
+              <span class="chevron"><i class="bi bi-chevron-right"></i></span>
+              <div class="sub-menu project-submenu">
+                <a href="#projects">CSE & IT</a>
+                <a href="#projects">AI</a>
+                <a href="#projects">EEE</a>
+                <a href="#projects">ECE</a>
+                <a href="#projects">Mechatronics</a>
+                <a href="#projects">Mechanical</a>
+                <a href="#projects">Civil</a>
+                <a href="#projects">IOT</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="auth-links">
+        <button data-action="signup">Sign Up</button>
+        <button data-action="login">Login</button>
+        <button data-action="logout" class="hide">Logout</button>
+        <span class="signed-in hide" data-status="signed-in">Signed in</span>
+      </div>
+    </div>
+  </nav>
+
+
+  <main>
+    <section class="section" id="about">
+      <div class="section-heading">
+        <h2>About Indian Info Tech</h2>
+        <p>Enrich Your Innovation</p>
+      </div>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>
+            Indian Info Tech is a hands-on research and development center
+            empowering students, hobbyists, and professionals in emerging
+            technologies. We blend IoT hardware, software engineering, and
+            applied sciences to solve industry-scale challenges.
+          </p>
+        </div>
+        <div class="about-media">
+          <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=900&q=80"
+            alt="Students collaborating" />
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section" id="contact">
+      <div class="section-heading">
+        <h2>Contact & Admissions</h2>
+        <p>Research us in Namakkal, Tamil Nadu</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <p><strong>Phone:</strong> +91 90034 46612</p>
+          <p><strong>Email:</strong> iitdetails@gmail.com</p>
+          <p><strong>Location:</strong> Namakkal, Tamil Nadu, India</p>
+        </div>
+        <div class="contact-map">
+          <iframe title="Namakkal Map"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3913.573081914043!2d78.16402797477133!3d11.219189450871369!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3babce8c90cd0ef3%3A0x6a354282bc947aa1!2sIndian%20Info%20Tech!5e0!3m2!1sen!2sin!4v1764400830341!5m2!1sen!2sin"
+            width="100" height="290" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="contact-form-wrapper">
+          <form class="contact-form" name="contact-form1" action="" method="post">
+            <h3 class="form-title">Send us a Message</h3>
+            <label>
+              Name
+              <input type="text" name="name" id='name' placeholder="Enter your full name" required />
+            </label>
+            <label>
+              Email
+              <input type="email" name="email" id='email' placeholder="Enter your email address" required />
+            </label>
+            <label>
+              Message
+              <textarea name="message" rows="4" id='message' placeholder="Write your message here..."
+                required></textarea>
+            </label>
+            <button type="submit" value="Submit" id="submit" class="primary">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>Indian Info Tech</h3>
+        <p>
+          Research & Development Center enabling students, hobbyists, and professionals to build
+          production-ready IoT, software, and hardware solutions with expert mentorship.
+        </p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="products.html">Products</a>
+        <a href="mou-section.html">MOU</a>
+        <a href="projects.html">Projects</a>
+        <a href="courses.html">Courses</a>
+        <a href="contact">Contact</a>
+      </div>
+      <div class="footer-links">
+        <h4>Programs</h4>
+        <a href="courses.html">IoT Prototyping</a>
+        <a href="courses.html">Full-Stack Systems</a>
+        <a href="courses.html">Embedded Firmware</a>
+        <a href="#projects">Innovation Labs</a>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p>+91 90034 46612</p>
+        <p>iitdetails@gmail.com</p>
+        <p>Namakkal, Tamil Nadu, India</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span id="year"></span> Indian Info Tech. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <dialog class="modal" id="auth-modal">
+    <form class="modal-box" method="post" action="" name="contact-form" id="signupForm">
+      <h3 class="modal-title">Sign Up</h3>
+      <p class="modal-description">
+        Create an account to save your learning progress.
+      </p>
+      <label>
+        Full Name
+        <input type="text" name="fullName" id="fullName" required />
+      </label>
+      <label>
+        Email
+        <input type="email" name="email" id="email" required />
+      </label>
+      <label>
+        Password
+        <input type="password" name="password" id="password" required minlength="6" />
+      </label>
+      <div class="modal-actions">
+        <button type="button" class="secondary close-modal" data-close="auth">
+          Cancel
+        </button>
+        <button class="primary" type="submit" id="signupSubmit" value="submit">Submit</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="login-modal">
+    <form class="modal-box" method="dialog">
+      <h3 class="modal-title">Login</h3>
+      <label>
+        Username
+        <input type="text" name="username" required />
+      </label>
+      <label>
+        Password
+        <input type="password" name="password" required />
+      </label>
+      <div class="modal-actions">
+        <button type="button" class="secondary close-modal" data-close="login">
+          Cancel
+        </button>
+        <button class="primary" value="submit">Login</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script>
+    // After sign-up submit: wait 1s, show alert, then hide the sign-up form
+    const signupForm = document.getElementById('signupForm');
+    const authModal = document.getElementById('auth-modal');
+
+    if (signupForm && authModal) {
+      signupForm.addEventListener('submit', function (event) {
+        // Prevent default form submission so user can see the alert
+        event.preventDefault();
+
+        setTimeout(() => {
+          alert('Registered successfully');
+          // Close / hide the sign-up dialog after user clicks OK
+          if (typeof authModal.close === 'function') {
+            authModal.close();
+          } else {
+            authModal.style.display = 'none';
+          }
+        }, 1000); // 1 second delay
+      });
+    }
+  </script>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function () {
+      emailjs.init({
+        publicKey: "mG3GwpcshkTgM04XX",
+      });
+    })();
+  </script>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

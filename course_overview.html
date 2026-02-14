@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Overview | Indian Info Tech</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #eb4b11;
+            --bg-color: #000000;
+            --sidebar-bg: #0a0a0a;
+            --text-color: #ffffff;
+            --text-secondary: #a0a0a0;
+            --card-bg: #111111;
+            --gold: #fcc200;
+            --green: #00ff00;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Barlow', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Sidebar - Fixed Left */
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #222;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            gap: 1rem;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: 1px solid #333;
+        }
+
+        .back-btn:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: white;
+        }
+
+        .overview-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            justify-content: center;
+        }
+
+        .overview-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(235, 75, 17, 0.3);
+        }
+
+        /* Main Content - 3 Section Layout */
+        .main-content {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Course Details Section - Top */
+        .course-details-section {
+            background: linear-gradient(135deg, rgba(30, 60, 114, 0.3), rgba(42, 82, 152, 0.2));
+            border-bottom: 1px solid #2a5298;
+            padding: 2rem;
+            min-height: 150px;
+        }
+
+        .details-title {
+            color: #4a9eff;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .video-count {
+            color: white;
+            font-size: 1rem;
+        }
+
+        .count-number {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Video Player Section - Middle */
+        .video-player-section {
+            background-color: #000;
+            border-bottom: 1px solid #222;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 350px;
+        }
+
+        .video-placeholder {
+            width: 100%;
+            max-width: 800px;
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            border: 2px solid #333;
+        }
+
+        .course-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--gold);
+            text-transform: uppercase;
+            text-align: center;
+            padding: 0 2rem;
+        }
+
+        .start-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background-color: var(--green);
+            color: black;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 255, 0, 0.4);
+        }
+
+        /* Course Description Section - Bottom */
+        .course-description-section {
+            background: linear-gradient(135deg, rgba(30, 60, 114, 0.3), rgba(42, 82, 152, 0.2));
+            padding: 2rem;
+            flex: 1;
+        }
+
+        .description-title {
+            color: #4a9eff;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .description-text {
+            color: var(--text-color);
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 1rem;
+                flex-direction: row;
+                justify-content: space-between;
+                border-right: none;
+                border-bottom: 1px solid #222;
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .course-details-section,
+            .video-player-section,
+            .course-description-section {
+                padding: 1.5rem;
+            }
+
+            .course-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <a href="teach_dashboard.html" class="back-btn">
+            <i class="bi bi-arrow-left"></i>
+            Back to Dashboard
+        </a>
+        <a href="#" class="overview-btn" onclick="startCourse()">
+            <i class="bi bi-play-circle-fill"></i>
+            Course Overview
+        </a>
+    </aside>
+
+    <!-- Main Content - 3 Sections -->
+    <main class="main-content">
+        <!-- Section 1: Course Details -->
+        <section class="course-details-section">
+            <div class="details-title">Course Details</div>
+            <div class="video-count">
+                • Total Videos: <span class="count-number" id="totalVideos">1</span>
+            </div>
+            <div class="video-count">
+                • Duration: <span class="count-number">1 Hour</span>
+            </div>
+        </section>
+
+        <!-- Section 2: Video Player -->
+        <section class="video-player-section">
+            <div class="video-placeholder">
+                <h1 class="course-title" id="courseTitle">OPTICAL CHARACTER RECOGNITION</h1>
+                <button class="start-btn" onclick="startCourse()">
+                    <i class="bi bi-play-circle-fill"></i>
+                    START LEARNING NOW
+                </button>
+            </div>
+        </section>
+
+        <!-- Section 3: Course Description -->
+        <section class="course-description-section">
+            <div class="description-title">Course Description</div>
+            <p class="description-text" id="courseDescription">
+                Optical Character Recognition (OCR) is a technology used to convert printed or handwritten text from
+                images, scanned documents, or photos into editable and searchable digital text. It works by analyzing
+                the shapes of characters in an image and matching them with known letters, numbers, or symbols.
+            </p>
+        </section>
+    </main>
+
+    <script>
+        // Get course details from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const courseName = urlParams.get('course') || 'Default Course';
+
+        // Update page with course info
+        document.getElementById('courseTitle').textContent = courseName.toUpperCase();
+        document.title = `${courseName} | Indian Info Tech`;
+
+        // Course descriptions database
+        const courseDescriptions = {
+            "OPTICAL CHARACTER RECOGNITION": "Optical Character Recognition (OCR) is a technology used to convert printed or handwritten text from images, scanned documents, or photos into editable and searchable digital text. It works by analyzing the shapes of characters in an image and matching them with known letters, numbers, or symbols.",
+            "DIGIT RECOGNITION USING GUI": "Learn to build a graphical user interface application that can recognize handwritten digits using machine learning algorithms. This course covers image processing, neural networks, and GUI development.",
+            "DIABETES PREDICTION USING AI": "Master the techniques of using artificial intelligence to predict diabetes risk. Learn data preprocessing, feature engineering, and machine learning models for healthcare applications.",
+            "LEAF DETECTION & DISEASE IDENTIFICATION USING DEEP LEARNING": "Explore deep learning techniques for identifying plant diseases through leaf analysis. Learn image classification, convolutional neural networks, and agricultural AI applications.",
+            "CHARACTER RECOGNITION USING ML": "Dive into machine learning algorithms for character recognition. Understand feature extraction, pattern recognition, and practical implementation of OCR systems.",
+            "ARDUINO UNO BASICS & BEYOND": "Master Arduino programming from fundamentals to advanced projects. Learn electronics, sensors, actuators, and build real-world IoT applications.",
+            "MACHINE LEARNING": "Comprehensive introduction to machine learning concepts, algorithms, and applications. Learn supervised and unsupervised learning, model evaluation, and deployment.",
+            "DEEP LEARNING ALGORITHMS": "Advanced course on deep learning architectures including CNNs, RNNs, and transformers. Learn to build and train neural networks for complex tasks.",
+            "INTERNET OF THINGS": "Explore IoT ecosystem, protocols, and applications. Learn to connect devices, collect data, and build smart systems.",
+            "ARTIFICIAL INTELLIGENCE WEBINAR": "Interactive webinar covering AI fundamentals, current trends, and future prospects. Learn from industry experts and real-world case studies."
+        };
+
+        // Set description if available
+        const description = courseDescriptions[courseName.toUpperCase()] || "This comprehensive course will teach you the fundamentals and advanced concepts. You'll gain hands-on experience through practical projects and real-world applications. Master the skills needed to excel in this field and apply your knowledge to solve real-world problems.";
+        document.getElementById('courseDescription').textContent = description;
+
+        function startCourse() {
+            // Redirect to video player with course name
+            window.location.href = `video_player.html?course=${encodeURIComponent(courseName)}`;
+        }
+
+        // Check authentication
+        const loggedUser = JSON.parse(localStorage.getItem('loggedInUser'));
+        if (!loggedUser) {
+            alert("Please log in to access this course.");
+            sessionStorage.setItem('authAction', 'login');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+
+</html>

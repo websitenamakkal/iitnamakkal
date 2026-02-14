@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Indian Info Tech</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #d4af37;
+            --gold-light: #f4d03f;
+            --dark-bg: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --border-color: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --primary-blue: #4a9eff;
+            --success-green: #2e7d32;
+            --danger-red: #ff4757;
+            --warning-orange: #ff9800;
+            --approved-green: #4caf50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Barlow', sans-serif;
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            padding: 2.5rem;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            padding: 1.5rem 0;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .logout-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--gold);
+            transition: all 0.3s ease;
+            padding: 0.5rem;
+        }
+
+        .logout-container:hover {
+            transform: translateY(-2px);
+            color: var(--gold-light);
+        }
+
+        .logout-container i {
+            font-size: 2.5rem;
+            line-height: 1;
+        }
+
+        .header-logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-direction: row-reverse;
+        }
+
+        .header-logo-section img {
+            height: 90px;
+            filter: drop-shadow(0 4px 8px rgba(212, 175, 55, 0.3));
+        }
+
+        nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        nav a[href="admin_dashboard.html"] {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            color: #000;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        nav a[href="manage_courses.html"] {
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+        }
+
+        nav a[href="manage_courses.html"]:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* Table Styles */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 16px;
+            border: 2px solid var(--gold);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            background: var(--card-bg);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            text-align: center;
+        }
+
+        th {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            color: var(--gold);
+            padding: 1.5rem 1rem;
+            font-weight: 800;
+            font-size: 0.85rem;
+            border-bottom: 2px solid var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        th:not(:last-child) {
+            border-right: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 1.2rem 1rem;
+            font-weight: 500;
+            font-size: 0.95rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td:not(:last-child) {
+            border-right: 1px solid var(--border-color);
+        }
+
+        tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .dark-row {
+            background-color: rgba(51, 51, 51, 0.3);
+            color: var(--text-primary);
+        }
+
+        .light-row {
+            background-color: rgba(26, 26, 26, 0.5);
+            color: var(--text-primary);
+        }
+
+        .action-btns {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+
+        .btn-circle {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+        }
+
+        .btn-circle:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-reject {
+            background: var(--danger-red);
+            box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);
+        }
+
+        .btn-reject:hover {
+            box-shadow: 0 6px 20px rgba(255, 71, 87, 0.5);
+        }
+
+        .btn-approve {
+            background: var(--success-green);
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+        }
+
+        .btn-approve:hover {
+            box-shadow: 0 6px 20px rgba(46, 125, 50, 0.5);
+        }
+
+        .stats-msg {
+            margin-top: 2rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--gold);
+            text-align: center;
+            padding: 1rem;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 8px;
+            border: 1px solid var(--gold);
+        }
+
+        /* Course Status Styling */
+        .course-approved {
+            color: var(--approved-green);
+            font-weight: 600;
+        }
+
+        .course-pending {
+            color: var(--warning-orange);
+            font-weight: 600;
+        }
+
+        .status-approved {
+            color: var(--approved-green);
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 0.3rem 0.8rem;
+            background: rgba(76, 175, 80, 0.1);
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .status-pending {
+            color: var(--danger-red);
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 0.3rem 0.8rem;
+            background: rgba(255, 71, 87, 0.1);
+            border-radius: 6px;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div style="display: flex; gap: 2rem; align-items: center;">
+            <a href="index.html" class="logout-container" onclick="logoutAdmin()">
+                <i class="bi bi-box-arrow-left"></i>
+            </a>
+            <nav style="display: flex; gap: 1.5rem;">
+                <a href="admin_dashboard.html"
+                    style="text-decoration: none; color: var(--primary-orange); font-weight: 800;">MANAGE USERS</a>
+                <a href="manage_courses.html" style="text-decoration: none; color: #333; font-weight: 800;">MANAGE
+                    COURSES</a>
+            </nav>
+        </div>
+
+        <div class="header-logo-section">
+            <img src="IIT-Photoroom.png" alt="IIT Logo">
+        </div>
+    </header>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>USER ID</th>
+                    <th>NAME</th>
+                    <th>MAIL-ID</th>
+                    <th>PASSWORD</th>
+                    <th></th>
+                    <th>ACCESS status</th>
+                    <th>
+                        COURSE ACCESS BTN
+                        <i class="bi bi-arrow-clockwise" onclick="loadUsers()"
+                            style="cursor:pointer; color:var(--text-secondary); margin-left:5px;"
+                            title="Refresh Data"></i>
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+            </tbody>
+        </table>
+    </div>
+
+    <p class="stats-msg" id="statsMsg">Total Students: 0</p>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const isAdmin = sessionStorage.getItem('adminLoggedIn');
+            if (!isAdmin) {
+                alert("Restricted Access: Admin Login Required.");
+                window.location.href = 'index.html';
+                return;
+            }
+            loadUsers();
+        });
+
+        // Auto-refresh when data changes in other tabs (e.g. Manage Courses)
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'registeredUsers') {
+                loadUsers();
+            }
+        });
+
+        function loadUsers() {
+            // Fetch latest data every time this runs
+            const users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+            const tbody = document.getElementById('userTableBody');
+            tbody.innerHTML = '';
+
+            document.getElementById('statsMsg').innerText = `Total Students: ${users.length}`;
+
+            users.forEach((user, index) => {
+                const tr = document.createElement('tr');
+                tr.className = index % 2 === 0 ? 'dark-row' : 'light-row';
+
+                // Generate course lists with remove buttons
+                let purchasedHtml = '';
+                if (user.purchasedCourses && user.purchasedCourses.length > 0) {
+                    const items = user.purchasedCourses.map(c =>
+                        `${c} <i class="bi bi-x-circle-fill" style="color:var(--danger-red); cursor:pointer; margin-left:2px;" onclick="removeUserCourse(${index}, '${c.replace(/'/g, "\\'")}', 'purchased')" title="Remove Course"></i>`
+                    ).join(', ');
+                    purchasedHtml = `<span class="course-approved">${items}</span><br>`;
+                }
+
+                let interestedHtml = '';
+                if (user.interestedCourses && user.interestedCourses.length > 0) {
+                    const items = user.interestedCourses.map(c =>
+                        `${c} <i class="bi bi-x-circle-fill" style="color:var(--danger-red); cursor:pointer; margin-left:2px;" onclick="removeUserCourse(${index}, '${c.replace(/'/g, "\\'")}', 'interested')" title="Remove Course"></i>`
+                    ).join(', ');
+                    interestedHtml = `<span class="course-pending">${items}</span>`;
+                }
+
+                let courses = '';
+                if (purchasedHtml || interestedHtml) courses = purchasedHtml + interestedHtml;
+
+                const status = user.accessGranted
+                    ? '<span class="status-approved">APPROVED</span>'
+                    : '<span class="status-pending">PENDING</span>';
+
+                tr.innerHTML = `
+                    <td>${user.userId || 'N/A'}</td>
+                    <td>${user.fullname || user.name || 'N/A'}</td>
+                    <td>${user.email}</td>
+                    <td>
+                        <div style="display:flex; align-items:center; justify-content:center; gap:8px;">
+                            <span>${user.password}</span>
+                            <button class="btn-circle" style="width:30px; height:30px; background:var(--primary-blue); font-size:0.9rem;" onclick="changePassword(${index})" title="Change Password">
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
+                        </div>
+                    </td>
+                    <td>${courses}</td>
+                    <td>${status}</td>
+                    <td>
+                        <div class="action-btns">
+                            <button class="btn-circle btn-reject" onclick="toggleAccess(${index}, false)" title="Reject Access">
+                                <i class="bi bi-x"></i>
+                            </button>
+                            <button class="btn-circle btn-approve" onclick="toggleAccess(${index}, true)" title="Approve Access">
+                                <i class="bi bi-check"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function removeUserCourse(userIndex, courseName, type) {
+            if (!confirm(`Are you sure you want to remove access to "${courseName}"?`)) return;
+
+            const users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+            const user = users[userIndex];
+
+            if (type === 'purchased') {
+                user.purchasedCourses = user.purchasedCourses.filter(c => c !== courseName);
+            } else {
+                user.interestedCourses = user.interestedCourses.filter(c => c !== courseName);
+            }
+
+            localStorage.setItem('registeredUsers', JSON.stringify(users));
+
+            // Sync currently logged in session if it's the same user
+            const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (loggedInUser && (loggedInUser.email || '').toLowerCase().trim() === (user.email || '').toLowerCase().trim()) {
+                loggedInUser.purchasedCourses = user.purchasedCourses;
+                loggedInUser.interestedCourses = user.interestedCourses;
+                localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
+            }
+
+            loadUsers();
+        }
+
+        function changePassword(index) {
+            const users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+            if (index < 0 || index >= users.length) return;
+
+            const user = users[index];
+            const newPass = prompt(`Enter new password for ${user.fullname || user.email}:`, user.password);
+
+            if (newPass !== null && newPass.trim() !== "") {
+                user.password = newPass.trim();
+                localStorage.setItem('registeredUsers', JSON.stringify(users));
+
+                // Sync currently logged in session if it's the same user
+                const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+                if (loggedInUser && (loggedInUser.email || '').toLowerCase().trim() === (user.email || '').toLowerCase().trim()) {
+                    loggedInUser.password = user.password;
+                    localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
+                }
+
+                alert(`Password updated successfully for ${user.fullname || user.email}`);
+                loadUsers();
+            }
+        }
+
+        function toggleAccess(index, allow) {
+            const users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+            if (index < 0 || index >= users.length) return;
+
+            const user = users[index];
+            user.accessGranted = allow;
+
+            if (allow) {
+                // Ensure correct structure
+                if (!Array.isArray(user.purchasedCourses)) user.purchasedCourses = [];
+                if (!Array.isArray(user.interestedCourses)) user.interestedCourses = [];
+
+                // Move all interested to purchased
+                user.interestedCourses.forEach(course => {
+                    const alreadyPurchased = user.purchasedCourses.some(p => p.toLowerCase().trim() === course.toLowerCase().trim());
+                    if (!alreadyPurchased) {
+                        user.purchasedCourses.push(course);
+                    }
+                });
+                user.interestedCourses = []; // Clear pending
+            }
+
+            localStorage.setItem('registeredUsers', JSON.stringify(users));
+
+            // Sync currently logged in session if it's the same user
+            const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (loggedInUser && (loggedInUser.email || '').toLowerCase().trim() === (user.email || '').toLowerCase().trim()) {
+                loggedInUser.accessGranted = user.accessGranted;
+                loggedInUser.purchasedCourses = user.purchasedCourses;
+                loggedInUser.interestedCourses = user.interestedCourses;
+                localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
+            }
+
+            alert(allow ? `Access granted for ${user.email}` : `Access revoked for ${user.email}`);
+            loadUsers();
+        }
+
+        function logoutAdmin() {
+            sessionStorage.removeItem('adminLoggedIn');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+
+</html>

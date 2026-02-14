@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Indian Info Tech | Research & Training Center</title>
+  <link rel="icon" type="image/jpeg" href="IIT-icon.png" />
+  <link rel="shortcut icon" type="image/jpeg" href="IIT-Photoroom.jpg" />
+  <link rel="apple-touch-icon" href="IIT-Photoroom.jpg" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+  <header class="hero" id="home">
+    <nav class="navbar">
+      <div class="brand">
+        <img src="IIT-Photoroom.png" alt="Indian Info Tech logo">
+      </div>
+      <button class="nav-toggle" aria-label="Toggle navigation"><i class="bi bi-list"></i></button>
+      <div class="nav-panel">
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="about.html">About</a>
+          <a href="products.html">Products</a>
+          <a href="mou-section.html">MOU</a>
+          <div class="explore-dropdown">
+            <button class="explore-toggle" type="button">
+              <!-- <span class="menu-icon student"></span> -->
+              Students Corner
+              <span class="chevron"><i class="bi bi-caret-up-fill"></i></span>
+            </button>
+            <div class="explore-menu">
+              <div class="menu-item has-child">
+                <div class="menu-label">
+                  <!-- <span class="menu-icon download"></span> -->
+                  <button style="border: none; background: none; font-weight: bold; font-size: 16px;"
+                    onclick="window.location.href='teach_dashboard.html'">Courses</button>
+                </div>
+              </div>
+              <div class="menu-item has-child">
+                <div class="menu-label">
+                  <!-- <span class="menu-icon share"></span> -->
+                  Projects
+                </div>
+                <span class="chevron"><i class="bi bi-chevron-right"></i></span>
+                <div class="sub-menu project-submenu">
+                  <a href="projects.html">CSE & IT</a>
+                  <a href="projects.html">AI</a>
+                  <a href="projects.html">EEE</a>
+                  <a href="projects.html">ECE</a>
+                  <a href="projects.html">Mechatronics</a>
+                  <a href="projects.html">Mechanical</a>
+                  <a href="projects.html">Civil</a>
+                  <a href="projects.html">IOT</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <a href="#contact">Contact</a>
+        </div>
+        <div class="auth-links">
+          <button data-action="signup" onclick="openAuthModal('signup')">Sign Up</button>
+          <button data-action="login" onclick="openAuthModal('login')">Login</button>
+          <button data-action="logout" class="hide">Logout</button>
+          <span class="signed-in hide" data-status="signed-in">Signed in</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Welcome Message (shown when logged in) -->
+    <div class="welcome-message hide" id="welcomeMessage">
+      <div class="welcome-content">
+        <i class="bi bi-person-check-fill"></i>
+        <h2>Welcome back, <span id="welcomeUserName"></span>!</h2>
+        <p>We're glad to have you here. Explore our courses and resources.</p>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="slide">
+        <div class="item"
+          style="background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1500&q=80');">
+          <div class="content">
+            <div class="name">Smart IoT Innovations</div>
+            <div class="des">
+              Build real-world IoT systems that connect sensors, data, and intelligence for future-ready solutions.
+            </div>
+            <a class="seeMore" target="_blank" href="#courses">
+              <button>See More</button>
+            </a>
+          </div>
+        </div>
+
+        <div class="item"
+          style="background-image: url('https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=1500&q=80');">
+          <div class="content">
+            <div class="name">Full-Stack Software</div>
+            <div class="des">
+              Master design, development, and deployment of secure software products with expert mentorship.
+            </div>
+            <a class="seeMore" target="_blank" href="#courses">
+              <button>See More</button>
+            </a>
+          </div>
+        </div>
+
+        <div class="item"
+          style="background-image: url('https://www.spray.com/ko-kr/-/media/dam/industrial/usa/website-images/industries-applications-products-spraying-480x265/subpage-application-autospray-spraysystem-engineered-wood-480x265.jpg');">
+          <div class="content">
+            <div class="name">Mist Sprayer Systems</div>
+            <div class="des">
+              Design sustainable agriculture devices including automated mist sprayer technology customized for local
+              farms.
+            </div>
+            <a class="seeMore" target="_blank" href="#courses">
+              <button>See More</button>
+            </a>
+          </div>
+        </div>
+
+        <div class="item"
+          style="background-image: url('https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=900&q=80');">
+          <div class="content">
+            <div class="name">Research & Development</div>
+            <div class="des">
+              Hands-on research and training center empowering students, hobbyists, and professionals in emerging
+              technologies.
+            </div>
+            <a class="seeMore" target="_blank" href="#about">
+              <button>See More</button>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="button">
+        <button class="prev">◁</button>
+        <button class="next">▷</button>
+      </div>
+    </div>
+  </header>
+
+
+  <div class="online-workshop" style="margin-bottom: 30px;">
+    <div
+      style="font-size: 1.2rem; line-height: 1.8; color: var(--text); margin-top: 5%; width: 100%; max-width: 1000px; text-align: center; justify-self: center; padding: 0 1rem;">
+      <div class="section-heading">
+        <h2 id="session">Current Update's</h2>
+        <p>Research us in Namakkal, Tamil Nadu</p>
+      </div>
+      <p class="para-session">
+        We offer free weekly workshops with certification for all participants. Sessions are conducted every Saturday at
+        7 PM on YouTube and Google Meet. Each week, we cover a new topic related to software or hardware. Our live
+        classes are practical, interactive, and beginner-friendly.
+        Join us to enhance your technical skills and learn something new every week.
+      </p>
+    </div>
+
+    <div style="display: flex; justify-content: center; gap: 50px; flex-wrap: wrap; padding: 0 1rem;">
+      <iframe
+        src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fiitnamakkal%2F&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
+        width="470" height="500" style="border:none; overflow:hidden; " scrolling="no" frameborder="0"
+        allowtransparency="true"></iframe>
+
+      <a href="https://www.youtube.com/@iitprojects" target="_blank"> <img
+          src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgjs5qNNGeCNk2GrY3LvSeXcd7OiH5QnrHC4iKT7xH6JURfrrmjcDuo7rc1nj0LCANpnp6qHctaVd_hYsttq6HaXNrYAaLlCZP-GkgcDmf40pu-KewEsCnwvPqukDi0336eQJ4o06zoRpsxUnmXZx6zuA33QSdkW31SeomJxOaJNwve-47pCf4FZ48WXQUg/s16000/New%20Products.gif"
+          alt="IIT-NAMAKKAL" style="border-radius: 10px; max-width: 400px; height: auto;" /></a>
+    </div>
+
+  </div>
+
+
+  <main>
+    <!-- Trainees Section -->
+    <section class="section gray" id="trainees">
+      <div class="section-heading">
+        <h2>Meet Our Expert Trainers</h2>
+        <p>Learn from industry professionals with years of experience</p>
+      </div>
+      <div class="trainees-grid">
+        <div class="trainee-card">
+          <div class="trainee-image">
+            <img src="Thiyagu.jpg" alt="Trainee 1">
+          </div>
+          <div class="trainee-info">
+            <h3>Thiyagu</h3>
+            <p class="trainee-role">Data Science Lead</p>
+            <p class="trainee-company">Indian Info Tech Pvt Ltd</p>
+          </div>
+        </div>
+
+        <div class="trainee-card">
+          <div class="trainee-image">
+            <img src="surya.jpg" alt="Trainee 2">
+          </div>
+          <div class="trainee-info">
+            <h3>Surya</h3>
+            <p class="trainee-role">Full Stack Engineer</p>
+            <p class="trainee-company">Tech Solutions Pvt Ltd</p>
+          </div>
+        </div>
+
+        <div class="trainee-card">
+          <div class="trainee-image">
+            <img src="thranijpg-1.jpg" alt="Trainee 3">
+          </div>
+          <div class="trainee-info">
+            <h3>Tharanishri</h3>
+            <p class="trainee-role">MERN Stack Developer</p>
+            <p class="trainee-company">Web Development Studio</p>
+          </div>
+        </div>
+
+        <div class="trainee-card">
+          <div class="trainee-image">
+            <img src="Bharath (1).jpg" alt="Trainee 4">
+          </div>
+          <div class="trainee-info">
+            <h3>Bharath</h3>
+            <p class="trainee-role">Cloud Architect</p>
+            <p class="trainee-company">Cloud Services Inc</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section gray" id="testimonials"></section>
+    <div class="section-heading">
+      <h2>What Our Students Say</h2>
+      <p>Real feedback from our training programs</p>
+    </div>
+    <div class="testimonials-container">
+      <div class="testimonials-slider">
+        <div class="testimonial-slide active">
+          <div class="stars">
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+          </div>
+          <p class="testimonial-text">"Best training institute I've attended. The instructors are knowledgeable and the
+            curriculum is up-to-date with industry standards."</p>
+          <h4 class="testimonial-name">Thiyagu</h4>
+          <p class="testimonial-role">Data Science Lead</p>
+        </div>
+
+        <div class="testimonial-slide">
+          <div class="stars">
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+          </div>
+          <p class="testimonial-text">"Excellent mentorship and practical training. I gained real-world experience in
+            full stack development that prepared me for the industry."</p>
+          <h4 class="testimonial-name">Surya</h4>
+          <p class="testimonial-role">Full Stack Engineer</p>
+        </div>
+
+        <div class="testimonial-slide">
+          <div class="stars">
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+          </div>
+          <p class="testimonial-text">"The MERN Stack course transformed my career. The curriculum was up-to-date and
+            the projects were challenging yet rewarding."</p>
+          <h4 class="testimonial-name">Tharanishri</h4>
+          <p class="testimonial-role">MERN Stack Developer</p>
+        </div>
+
+        <div class="testimonial-slide">
+          <div class="stars">
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+          </div>
+          <p class="testimonial-text">"Great learning environment with industry-standard tools. The cloud architecture
+            program exceeded my expectations in every way."</p>
+          <h4 class="testimonial-name">Bharath</h4>
+          <p class="testimonial-role">Cloud Architect</p>
+        </div>
+      </div>
+
+      <div class="testimonial-dots">
+        <span class="dot active" data-slide="0"></span>
+        <span class="dot" data-slide="1"></span>
+        <span class="dot" data-slide="2"></span>
+        <span class="dot" data-slide="3"></span>
+      </div>
+    </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="section-heading">
+        <h2>Contact & Admissions</h2>
+        <p>Research us in Namakkal, Tamil Nadu</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <p><strong>Phone:</strong> +91 90034 46612</p>
+          <p><strong>Email:</strong> iitdetails@gmail.com</p>
+          <p><strong>Location:</strong> Namakkal, Tamil Nadu, India</p>
+        </div>
+        <div class="contact-map">
+          <iframe title="Namakkal Map"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3913.573081914043!2d78.16402797477133!3d11.219189450871369!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3babce8c90cd0ef3%3A0x6a354282bc947aa1!2sIndian%20Info%20Tech!5e0!3m2!1sen!2sin!4v1764400830341!5m2!1sen!2sin"
+            width="100" height="290" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="contact-form-wrapper">
+          <form class="contact-form" name="contact-form1" action="" method="post">
+            <h3 class="form-title">Send us a Message</h3>
+            <label>
+              Name
+              <input type="text" name="name" id='name' placeholder="Enter your full name" required />
+            </label>
+            <label>
+              Email
+              <input type="email" name="email" id='email' placeholder="Enter your email address" required />
+            </label>
+            <label>
+              Message
+              <textarea name="message" rows="4" id='message' placeholder="Write your message here..."
+                required></textarea>
+            </label>
+            <button type="submit" value="Submit" id="submit" class="primary">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+  </main>
+
+  <footer class="site-footer" id="footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>Indian Info Tech</h3>
+        <p>
+          Research & Development Center enabling students, hobbyists, and professionals to build
+          production-ready IoT, software, and hardware solutions with expert mentorship.
+        </p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="products.html">Products</a>
+        <a href="mou-section.html">MOU</a>
+        <a href="products.html">Projects</a>
+        <a href="courses.html">Courses</a>
+        <a href="contact">Contact</a>
+      </div>
+      <div class="footer-links">
+        <h4>Programs</h4>
+        <a href="courses.html">IoT Prototyping</a>
+        <a href="courses.html">Full-Stack Systems</a>
+        <a href="courses.html">Embedded Firmware</a>
+        <a href="#projects">Innovation Labs</a>
+      </div>
+      <div class="footer-contact">
+        <h4>Contact</h4>
+        <p>+91 90034 46612</p>
+        <p>iitdetails@gmail.com</p>
+        <p>Namakkal, Tamil Nadu, India</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© <span id="year"></span> Indian Info Tech. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Auth Modal Overlay -->
+  <div class="auth-modal-overlay" id="authModal">
+    <div class="auth-card">
+      <h2 id="modalTitle">Login Form</h2>
+
+      <div class="form-toggle">
+        <button type="button" class="toggle-btn active" id="loginTab" onclick="switchTab('login')">Login</button>
+        <button type="button" class="toggle-btn" id="signupTab" onclick="switchTab('signup')">Signup</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="login-form">
+        <div class="form-group">
+          <input type="email" id="login-email" placeholder="Email Address" required>
+        </div>
+        <div class="form-group">
+          <input type="password" id="login-password" placeholder="Password" required>
+        </div>
+        <a href="https://forms.gle/Z4yqiBH2hLa1cK567" class="forgot-password" target="_blank">Forgot Admin password?</a>
+        <button type="submit" class="auth-btn">Login</button>
+      </form>
+
+      <!-- Signup Form (Hidden by default) -->
+      <form id="signup-form" style="display: none;">
+        <div class="form-group">
+          <input type="text" id="signup-fullname" placeholder="Full Name" required>
+        </div>
+        <div class="form-group">
+          <input type="email" id="signup-email" placeholder="Email Address" required>
+        </div>
+        <div class="form-group">
+          <input type="password" id="signup-password" placeholder="Password" required>
+        </div>
+        <div class="form-group">
+          <input type="password" id="signup-confirm-password" placeholder="Confirm password" required>
+        </div>
+        <div class="form-group">
+          <input type="tel" id="signup-mobile" placeholder="Mobile Number" required>
+        </div>
+        <div class="form-group">
+          <input type="text" id="signup-place" placeholder="Place" required>
+        </div>
+        <button type="submit" class="auth-btn">Signup</button>
+      </form>
+
+      <button class="close-modal-btn" onclick="closeAuthModal()">×</button>
+    </div>
+  </div>
+
+  <script src="script.js" defer></script>
+  <script>
+    // Inline script for modal handling to ensure it works immediately
+    function openAuthModal(mode = 'login') {
+      const modal = document.getElementById('authModal');
+      modal.style.display = 'flex';
+      switchTab(mode);
+    }
+
+    function closeAuthModal() {
+      document.getElementById('authModal').style.display = 'none';
+    }
+
+    function switchTab(mode) {
+      const loginForm = document.getElementById('login-form');
+      const signupForm = document.getElementById('signup-form');
+      const loginTab = document.getElementById('loginTab');
+      const signupTab = document.getElementById('signupTab');
+      const title = document.getElementById('modalTitle');
+
+      if (mode === 'login') {
+        loginForm.style.display = 'block';
+        signupForm.style.display = 'none';
+        loginTab.classList.add('active');
+        signupTab.classList.remove('active');
+        title.textContent = 'Login Form';
+      } else {
+        loginForm.style.display = 'none';
+        signupForm.style.display = 'block';
+        signupTab.classList.add('active');
+        loginTab.classList.remove('active');
+        title.textContent = 'Signup Form';
+      }
+    }
+
+    // Close on outside click
+    document.getElementById('authModal').addEventListener('click', (e) => {
+      if (e.target.id === 'authModal') closeAuthModal();
+    });
+
+    // Check if user was redirected from another page to login/signup
+    window.addEventListener('DOMContentLoaded', () => {
+      // Data Sanitization & Migration
+      (function () {
+        const users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+        let changed = false;
+        users.forEach(u => {
+          if (!u.purchasedCourses || !Array.isArray(u.purchasedCourses)) { u.purchasedCourses = []; changed = true; }
+          if (!u.interestedCourses || !Array.isArray(u.interestedCourses)) { u.interestedCourses = []; changed = true; }
+          if (u.accessGranted === undefined) { u.accessGranted = false; changed = true; }
+          // Trim and lowercase email if not already done
+          if (u.email && (u.email !== u.email.trim() || u.email !== u.email.toLowerCase())) {
+            u.email = u.email.trim().toLowerCase();
+            changed = true;
+          }
+        });
+        if (changed) {
+          localStorage.setItem('registeredUsers', JSON.stringify(users));
+          console.log("Registered users data sanitized.");
+        }
+      })();
+
+      const authAction = sessionStorage.getItem('authAction');
+      if (authAction) {
+        sessionStorage.removeItem('authAction'); // Clear it
+        openAuthModal(authAction); // Open the modal with the stored action
+      }
+    });
+
+    // Login Logic
+    document.getElementById('login-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value.trim();
+
+      if (!email || !password) {
+        alert('Please fill in all fields');
+        return;
+      }
+
+      // Admin Login Check
+      if (email === "admin-Thiyagu@gmail.com" && password === "IIT@4679&_Thiyagu") {
+        sessionStorage.setItem('adminLoggedIn', 'true');
+        alert('Welcome Admin!');
+        window.location.href = 'admin_dashboard.html';
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+      const user = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+
+      if (user) {
+        localStorage.setItem('loggedInUser', JSON.stringify(user));
+        alert('Login Successful!');
+        closeAuthModal();
+        location.reload(); // Reload to update UI (show logout check script)
+      } else {
+        const emailExists = users.some(u => u.email.toLowerCase() === email.toLowerCase());
+        if (!emailExists) {
+          if (confirm('User not registered. would you like to Sign Up?')) {
+            switchTab('signup');
+          }
+        } else {
+          alert('Invalid password');
+        }
+      }
+    });
+
+    // Signup Logic
+    document.getElementById('signup-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const fullname = document.getElementById('signup-fullname').value.trim();
+      const email = document.getElementById('signup-email').value.trim();
+      const password = document.getElementById('signup-password').value.trim();
+      const confirmPassword = document.getElementById('signup-confirm-password').value.trim();
+      const mobile = document.getElementById('signup-mobile').value.trim();
+      const place = document.getElementById('signup-place').value.trim();
+
+      // Email validation for Full Name field
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (emailRegex.test(fullname)) {
+        alert('Error: Please enter your real Full Name (e.g. John Doe), not an email address, in the Name field.');
+        return;
+      }
+
+      if (!fullname || !email || !password || !confirmPassword || !mobile || !place) {
+        alert('All fields are required');
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        alert('Passwords do not match!');
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+
+      if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+        alert('Email already exists!');
+        return;
+      }
+
+      const newUser = {
+        userId: Math.floor(1000 + Math.random() * 9000),
+        fullname,
+        email,
+        password,
+        mobile,
+        place,
+        purchasedCourses: [],
+        accessGranted: false // Default to false
+      };
+      users.push(newUser);
+      localStorage.setItem('registeredUsers', JSON.stringify(users));
+
+      alert('Signup Successful! Please login.');
+      switchTab('login');
+      // Pre-fill login
+      document.getElementById('login-email').value = email;
+    });
+
+  </script>
+
+
+
+  <script src="script.js" defer></script>
+</body>
+
+</html>

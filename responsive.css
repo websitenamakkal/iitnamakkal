@@ -1,0 +1,311 @@
+/* Responsive Styles for Dashboard & Video Player */
+
+/* =========================================
+   Video Player Page Responsiveness
+   ========================================= */
+
+/* Large Laptop / Desktop Tweaks (1200px - 1440px) */
+@media (max-width: 1440px) {
+    .playlist-sidebar {
+        width: 250px;
+    }
+}
+
+/* Laptop / Tablet Landscape (992px - 1200px) */
+@media (max-width: 1200px) {
+    .playlist-sidebar {
+        width: 230px;
+    }
+
+    .course-header h2 {
+        font-size: 1rem;
+        /* Smaller header font */
+    }
+}
+
+/* Tablet / Small Laptop / Large Mobile (Max Width 992px) */
+/* Breaking point for stacking the video player layout */
+@media (max-width: 992px) {
+    .video-page-layout {
+        flex-direction: column;
+        height: 100%;
+        /* Change from auto to 100% to ensure body scroll works if needed, or stick to auto */
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .video-main {
+        order: 2;
+        /* Video below navigation */
+        height: auto;
+        overflow: visible;
+        width: 100%;
+        flex: none;
+        /* Don't flex, just take space */
+    }
+
+    .playlist-sidebar {
+        order: 1;
+        /* Navigation/Playlist on top */
+        width: 100%;
+        height: auto;
+        /* Remove fixed heights to allow content to flow */
+        min-height: 0;
+        max-height: none;
+        border-right: none;
+        border-top: 1px solid #333;
+        overflow-y: visible;
+        /* Let page scroll handle it */
+    }
+
+    /* Video Player Sizing - "Fit and Big" */
+    .video-container {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        width: 100%;
+        /* Enforce 16:9 for perfect fit */
+        aspect-ratio: 16/9;
+        background: #000;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .video-container iframe {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .video-info {
+        padding: 1rem;
+    }
+}
+
+/* Mobile (Max Width 600px) */
+@media (max-width: 600px) {
+    .video-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .mark-complete-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .video-actions {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .subscribe-btn {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    /* Certificate Modal Mobile */
+    .certificate-container {
+        width: 95% !important;
+        padding: 1rem !important;
+        margin: 1rem;
+    }
+
+    .cert-main-title {
+        font-size: 2.5rem !important;
+    }
+
+    .input-name {
+        font-size: 2rem !important;
+        min-width: unset !important;
+        width: 100%;
+    }
+
+    .cert-footer-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .gold-seal {
+        width: 60px !important;
+        height: 60px !important;
+    }
+
+    .seal-inner {
+        width: 50px !important;
+        height: 50px !important;
+    }
+}
+
+/* =========================================
+   General Dashboard Responsiveness (Teach, My Learning)
+   ========================================= */
+
+/* Laptop adjustments for Grid (1024px - 1366px) */
+@media (max-width: 1366px) {
+    .course-grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 1rem;
+    }
+
+    .main-content {
+        padding: 1rem;
+    }
+}
+
+/* Tablet (Max Width 992px) */
+/* Override dashboard.css sidebar behavior if needed, 
+   but dashboard.css handles 900px breakpoint. We ensure smooth transition. */
+@media (max-width: 992px) {
+
+    /* Ensure sidebar collapses if not handled by dashboard.css at this width */
+    /* dashboard.css collapses at 900px. Let's force it at 992px for tablets */
+    .sidebar {
+        width: 80px;
+        padding: 1rem 0.5rem;
+    }
+
+    .sidebar .logo img {
+        max-width: 40px;
+    }
+
+    /* Hide text labels */
+    .nav-item span,
+    .logo span {
+        display: none;
+    }
+
+    .nav-item i {
+        margin-right: 0;
+        font-size: 1.5rem;
+        text-align: center;
+        width: 100%;
+    }
+
+    .main-content {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+    }
+}
+
+/* Mobile (Max Width 768px) */
+@media (max-width: 768px) {
+    .top-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    .search-bar {
+        width: 100%;
+    }
+
+    .top-actions {
+        justify-content: flex-end;
+        /* Keep profile on right */
+    }
+
+    /* Enhance Course Cards for Mobile */
+    .course-card {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 12px;
+        gap: 15px;
+        height: auto;
+    }
+
+    .course-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .course-thumb {
+        width: 100px !important;
+        height: 100px !important;
+        border-radius: 12px;
+        flex-shrink: 0;
+    }
+
+    .course-info {
+        padding: 0 !important;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        text-align: left;
+    }
+
+    .course-title {
+        font-size: 1rem !important;
+        margin-bottom: 5px !important;
+        line-height: 1.2;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: unset !important;
+    }
+
+    .course-tag {
+        font-size: 0.75rem !important;
+        margin-bottom: 2px !important;
+        color: var(--primary-color);
+        font-weight: 600;
+        text-transform: lowercase;
+    }
+
+    .course-meta {
+        margin-top: 5px !important;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .lesson-info {
+        font-size: 0.8rem !important;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        text-transform: lowercase;
+    }
+
+    .buy-btn {
+        padding: 0.4rem 1rem !important;
+        font-size: 0.8rem !important;
+        width: auto !important;
+        margin-top: 0 !important;
+    }
+
+    /* Carousel Mobile */
+    .carousel-section {
+        display: none;
+        /* Often simpler to hide complex carousels or simplify them */
+        /* But user might want it. Let's just adjust height */
+        display: block;
+    }
+
+    .carousel-container {
+        height: auto;
+    }
+
+    .slide-content {
+        padding: 1rem;
+        flex-direction: column-reverse;
+    }
+
+    .slide-image {
+        display: none;
+        /* Hide image on mobile to save space? Or adjust */
+    }
+
+    .slide-text h1 {
+        font-size: 1.2rem;
+    }
+}

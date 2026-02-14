@@ -1,0 +1,46 @@
+
+/* Mobile Responsiveness for Video Page */
+@media (max-width: 900px) {
+  .video-page-layout {
+    flex-direction: column;
+    height: auto;
+    overflow-y: auto;
+  }
+
+  .video-main {
+    order: 1;
+    height: auto;
+    overflow: visible;
+  }
+
+  .playlist-sidebar {
+    width: 100%;
+    order: 2;
+    height: 400px; /* Fixed height for playlist area on mobile */
+    border-right: none;
+    border-top: 1px solid #333;
+  }
+
+  .video-container {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+}
+
+@media (max-width: 600px) {
+  .video-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .mark-complete-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .video-info {
+    padding: 1rem;
+  }
+}

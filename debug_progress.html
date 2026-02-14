@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Debug Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-left: 4px solid #fcc200;
+        }
+
+        pre {
+            background: #222;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+
+        button {
+            background: #fcc200;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+        }
+
+        button:hover {
+            background: #e6b000;
+        }
+
+        .error {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+
+        .success {
+            color: #28a745;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔍 Course Progress Debug Tool</h1>
+
+        <div class="section">
+            <h2>Current User</h2>
+            <div id="userInfo"></div>
+        </div>
+
+        <div class="section">
+            <h2>All Progress Keys in localStorage</h2>
+            <button onclick="showAllProgressKeys()">Show All Progress Keys</button>
+            <pre id="allKeys"></pre>
+        </div>
+
+        <div class="section">
+            <h2>C++ Course Progress</h2>
+            <button onclick="checkCppProgress()">Check C++ Progress</button>
+            <pre id="cppProgress"></pre>
+        </div>
+
+        <div class="section">
+            <h2>Fix C++ Progress (Set to 100%)</h2>
+            <button onclick="fixCppProgress()">Fix C++ Progress to 100%</button>
+            <div id="fixResult"></div>
+        </div>
+
+        <div class="section">
+            <h2>Clear All Progress (Reset)</h2>
+            <button onclick="clearAllProgress()" style="background: #d32f2f;">Clear All Progress</button>
+            <div id="clearResult"></div>
+        </div>
+    </div>
+
+    <script>
+        function showAllProgressKeys() {
+            const keys = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('progress-')) {
+                    const value = localStorage.getItem(key);
+                    keys.push({
+                        key: key,
+                        value: value,
+                        parsed: JSON.parse(value)
+                    });
+                }
+            }
+            document.getElementById('allKeys').textContent = JSON.stringify(keys, null, 2);
+        }
+
+        function checkCppProgress() {
+            const loggedUser = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (!loggedUser) {
+                document.getElementById('cppProgress').innerHTML = '<span class="error">No logged in user found!</span>';
+                return;
+            }
+
+            const userIdentifier = (loggedUser.email || 'guest').replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+            const cppKey = `progress-${userIdentifier}-c++`;
+            const cppKeyAlt = `progress-${userIdentifier}-c--`;
+
+            const legacyKey = 'progress-c++';
+            const legacyKeyAlt = 'progress-c--';
+
+            const result = {
+                userEmail: loggedUser.email,
+                userIdentifier: userIdentifier,
+                expectedKey: cppKey,
+                alternateKey: cppKeyAlt,
+                legacyKey: legacyKey,
+                legacyKeyAlt: legacyKeyAlt,
+                data: {}
+            };
+
+            // Check all possible keys
+            const keysToCheck = [cppKey, cppKeyAlt, legacyKey, legacyKeyAlt];
+            keysToCheck.forEach(key => {
+                const value = localStorage.getItem(key);
+                if (value) {
+                    result.data[key] = {
+                        raw: value,
+                        parsed: JSON.parse(value)
+                    };
+                }
+            });
+
+            document.getElementById('cppProgress').textContent = JSON.stringify(result, null, 2);
+        }
+
+        function fixCppProgress() {
+            const loggedUser = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (!loggedUser) {
+                document.getElementById('fixResult').innerHTML = '<span class="error">No logged in user found!</span>';
+                return;
+            }
+
+            const userIdentifier = (loggedUser.email || 'guest').replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+            const cppKey = `progress-${userIdentifier}-c++`;
+
+            // C++ has 8 lessons (0-7)
+            const completedVideos = [0, 1, 2, 3, 4, 5, 6, 7];
+
+            localStorage.setItem(cppKey, JSON.stringify(completedVideos));
+
+            // Also set completion date
+            const now = new Date();
+            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            const dateStr = `${months[now.getMonth()]} ${now.getDate()} ${now.getFullYear()}`;
+            localStorage.setItem('date-' + cppKey, dateStr);
+
+            document.getElementById('fixResult').innerHTML = `
+                <span class="success">✓ Fixed!</span><br>
+                Key: ${cppKey}<br>
+                Completed Videos: ${JSON.stringify(completedVideos)}<br>
+                Date: ${dateStr}<br>
+                <br>
+                <a href="video_player.html?course=C%2B%2B" style="color: #fcc200; font-weight: bold;">→ Open C++ Course</a>
+            `;
+        }
+
+        function clearAllProgress() {
+            if (!confirm('Are you sure you want to clear ALL progress? This cannot be undone!')) {
+                return;
+            }
+
+            const keysToRemove = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('progress-') || key.startsWith('date-')) {
+                    keysToRemove.push(key);
+                }
+            }
+
+            keysToRemove.forEach(key => localStorage.removeItem(key));
+
+            document.getElementById('clearResult').innerHTML = `
+                <span class="success">✓ Cleared ${keysToRemove.length} progress keys</span>
+            `;
+        }
+
+        // Auto-load user info on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const loggedUser = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (loggedUser) {
+                document.getElementById('userInfo').innerHTML = `
+                    <strong>Email:</strong> ${loggedUser.email}<br>
+                    <strong>Name:</strong> ${loggedUser.fullname || loggedUser.name || 'N/A'}<br>
+                    <strong>User ID:</strong> ${loggedUser.userId || 'N/A'}
+                `;
+            } else {
+                document.getElementById('userInfo').innerHTML = '<span class="error">No user logged in</span>';
+            }
+        });
+    </script>
+</body>
+
+</html>

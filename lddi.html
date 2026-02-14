@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Details | Indian Info Tech</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Specific overrides for the requested UI layout */
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 2.5fr 1fr;
+            /* Larger left area, smaller sidebar */
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .banner-card {
+            background-color: transparent;
+            /* Banner itself is the card */
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .banner-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+        }
+
+        .overlay-btn-container {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            text-align: center;
+        }
+
+        .info-card {
+            background: #0f1219;
+            /* Darker sidebar background */
+            border: 1px solid #1f2937;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .section-header {
+            color: #3b82f6;
+            /* Blue heading */
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #3b82f6;
+            display: inline-block;
+            padding-bottom: 4px;
+        }
+
+        .course-meta-list {
+            list-style: none;
+        }
+
+        .course-meta-list li {
+            margin-bottom: 1.2rem;
+        }
+
+        .course-meta-label {
+            display: block;
+            font-size: 0.9rem;
+            color: #e5e7eb;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .course-meta-label::before {
+            content: '•';
+            color: #3b82f6;
+            font-size: 1.2rem;
+        }
+
+        .course-meta-value {
+            color: #9ca3af;
+            font-size: 0.85rem;
+            padding-left: 1.2rem;
+            display: block;
+        }
+
+        .learn-list {
+            font-size: 0.9rem;
+            color: #d1d5db;
+        }
+
+        .learn-list li {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .learn-list li::before {
+            content: "•";
+            color: #60a5fa;
+        }
+
+        .description-text {
+            color: #d1d5db;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Nav Override */
+        .sidebar {
+            z-index: 100;
+        }
+
+        .main-content {
+            padding-top: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <img src="IIT-Photoroom.png" alt="Indian Info Tech" style="border-radius: 8px;">
+        </div>
+        <ul class="nav-menu">
+            <li><a href="teach_dashboard.html" class="nav-item"><i class="bi bi-arrow-left"></i> <span>Back to
+                        Dashboard</span></a></li>
+            <li><a href="#" class="nav-item active"><i class="bi bi-collection-play"></i> <span>Course
+                        Overview</span></a></li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <!-- Breadcrumbs or simple title could go here -->
+            <div style="font-size: 1.5rem; font-weight: bold;">INTIAN INFO TECH</div>
+        </header>
+
+        <div class="course-detail-container">
+            <div class="layout-grid">
+                <!-- LEFT COLUMN -->
+                <div class="left-column">
+                    <!-- Banner Image with Overlay Button -->
+                    <div class="banner-card">
+                        <!-- Using a generic tech banner or specific one if available -->
+                        <!-- The user image shows a specific banner design. We will use a placeholder but structured similarly. -->
+                        <div
+                            style="position: relative; width: 100%; aspect-ratio: 16/9; background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                            <img src="" alt="Course Banner" id="courseBanner"
+                                style="opacity: 0.8; object-fit: cover; width: 100%; height: 100%;">
+
+                            <!-- Text Overlay mimicking the image -->
+                            <div
+                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);">
+                            </div>
+
+                            <div
+                                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; width: 80%;">
+                                <h1
+                                    style="font-size: 3rem; font-weight: 800; color: #fcc200; text-shadow: 0 4px 10px rgba(0,0,0,0.5); text-transform: uppercase; line-height: 1;">
+                                    Leaf detection & disease identification using deep learning </h1>
+                                <h2 style="font-size: 2rem; font-weight: 700; color: white; text-transform: uppercase;">
+                                    Course</h2>
+                            </div>
+
+                            <!-- Button Area -->
+                            <div class="overlay-btn-container">
+                                <button class="start-learning-btn" id="startBtn"
+                                    style="width: 60%; font-size: 1rem; padding: 0.8rem;">Start Learning Now
+                                    &rarr;</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description Section -->
+                    <div class="info-card">
+                        <div class="section-header">COURSE DESCRIPTION</div>
+                        <p class="description-text">
+                            Leaf Detection & Disease Identification using Deep Learning is a system that identifies
+                            plant leaves and detects any diseases they may have. It uses deep learning algorithms to
+                            analyze leaf images, helping farmers and gardeners take timely action to protect crops and
+                            improve plant health.
+                    </div>
+                </div>
+
+                <!-- RIGHT COLUMN -->
+                <div class="info-card">
+                    <div class="section-header">COURSE DETAILS</div>
+
+                    <ul class="course-meta-list">
+                        <li>
+                            <span class="course-meta-label">Total Videos</span>
+                            <span class="course-meta-value">1</span>
+                        </li>
+
+                    </ul>
+                    </li>
+                    </ul>
+                </div>
+            </div>
+    </main>
+
+    <script>
+        // Check auth and approval only when starting
+        function checkLearningAccess(courseTitle) {
+            const loggedUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
+            // If not logged in
+            if (!loggedUser) {
+                alert("Please go to buy the course and get approval to continue learning.");
+                sessionStorage.setItem('authAction', 'login');
+                window.location.href = 'index.html';
+                return false;
+            }
+
+            const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers')) || [];
+            const user = registeredUsers.find(u => u.email === loggedUser.email);
+
+            // If not approved for THIS specific course
+            const hasAccess = user && user.purchasedCourses && user.purchasedCourses.some(c => c.toLowerCase() === courseTitle.toLowerCase());
+
+            if (!hasAccess) {
+                alert("Please go to buy the course and get approval to continue learning.");
+                return false;
+            }
+
+            return true;
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const course = urlParams.get('course') || 'ocr';
+
+        // Dynamic content adjustments based on course
+        if (course) {
+            // If it's the "JavaScript Padikkalam" course, ensure the image matches
+            const banner = document.getElementById('courseBanner');
+            if (course.toLowerCase().includes('ocr')) {
+                banner.src = 'IOT-11.jpg';
+            } else if (course.toLowerCase().includes('ocr')) {
+                banner.src = 'IOT-11.jpg';
+            } else if (course.toLowerCase().includes('ocr')) {
+                banner.src = 'IOT-11.jpg';
+            }
+
+            // Set Start Learning link with strict check
+            const startBtn = document.getElementById('startBtn');
+            if (startBtn) {
+                startBtn.onclick = () => {
+                    if (checkLearningAccess(course)) {
+                        window.location.href = `video_player.html?course=${encodeURIComponent(course)}`;
+                    }
+                };
+            }
+        }
+    </script>
+</body>
+
+</html>
