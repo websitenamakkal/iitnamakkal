@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Internship Alerts | Indian Info Tech</title>
+    <link rel="icon" type="image/webp" href="IIT-icon.webp" />
+    <link rel="shortcut icon" type="image/webp" href="IIT-Photoroom.webp" />
+
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.min.css" as="style"
+        onload="this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.min.css">
+    </noscript>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style"
+        href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap"
+        onload="this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap">
+    </noscript>
+
+    <style>
+        :root {
+            --gold: #d4af37;
+            --gold-light: #f4d03f;
+            --dark-bg: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --border-color: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --primary-blue: #4a9eff;
+            --danger-red: #ff4757;
+            --success-green: #2ecc71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Barlow', sans-serif;
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles (matching manage_courses.html) */
+        .sidebar {
+            width: 250px;
+            background: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1rem;
+            position: fixed;
+            height: 100vh;
+        }
+
+        .logo img {
+            width: 100px;
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 4px 8px rgba(212, 175, 55, 0.3));
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--gold);
+        }
+
+        .nav-item.active {
+            border-left: 4px solid var(--gold);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 3rem;
+            width: calc(100% - 250px);
+        }
+
+        .header {
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+        }
+
+        /* Flex container for cards */
+        .workspace-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            max-width: 1200px;
+        }
+
+        /* Upload Card */
+        .admin-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        .card-header h2 {
+            font-size: 1.2rem;
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .live-badge {
+            background: var(--success-green);
+            color: black;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 800;
+        }
+
+        .staged-badge {
+            background: var(--primary-blue);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 800;
+        }
+
+        .drop-zone {
+            border: 2px dashed var(--border-color);
+            border-radius: 15px;
+            padding: 3rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.02);
+            margin-bottom: 2rem;
+        }
+
+        .drop-zone:hover,
+        .drop-zone.drag-over {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .drop-zone i {
+            font-size: 3rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .drop-zone p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        .drop-zone span {
+            font-size: 0.8rem;
+            color: #555;
+            margin-top: 0.5rem;
+            display: block;
+        }
+
+        /* Preview Section */
+        #previewContainer {
+            margin-top: 2rem;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        #previewImage {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 12px;
+            border: 2px solid var(--gold);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border-radius: 10px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-danger {
+            background: rgba(255, 71, 87, 0.1);
+            color: var(--danger-red);
+            border: 1px solid var(--danger-red);
+        }
+
+        .btn-danger:hover {
+            background: var(--danger-red);
+            color: white;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        /* Toast notifications */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            display: none;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+
+            to {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="logo">
+            <img src="IIT-Photoroom.webp" alt="Indian Info Tech">
+        </div>
+        <ul class="nav-menu">
+            <li><a href="admin_dashboard.html" class="nav-item"><i class="bi bi-people"></i> <span>Manage
+                        Users</span></a></li>
+            <li><a href="manage_courses.html" class="nav-item"><i class="bi bi-book"></i> <span>Manage
+                        Courses</span></a></li>
+            <li><a href="manage_internships.html" class="nav-item active"><i class="bi bi-megaphone"></i>
+                    <span>Internship Alert</span></a></li>
+            <li><a href="index.html" class="nav-item"><i class="bi bi-box-arrow-left"></i> <span>Logout</span></a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <div class="header">
+            <h1>Internship Alert System</h1>
+            <p>Upload a new banner (Image or GIF) to notify students about upcoming internship opportunities.</p>
+        </div>
+
+        <div class="workspace-grid">
+            <!-- Left: Current Live Poster -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <h2><i class="bi bi-broadcast"></i> Current Live Poster <span class="live-badge">LIVE</span></h2>
+                </div>
+                <div
+                    style="flex-grow: 1; display: flex; align-items: center; justify-content: center; background: #000; border-radius: 12px; overflow: hidden; min-height: 300px;">
+                    <img id="currentLiveImage"
+                        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHpxbm5nZ25nZ25nZ25nZ25nZ25nZ25nZ25nZ25nZ25nZ25nZ25nJmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/u04bOWYy7pY/giphy.gif"
+                        alt="Current Live Poster" style="max-width: 100%; max-height: 400px; object-fit: contain;">
+                </div>
+                <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 1rem; text-align: center;">This
+                    is what students see on the homepage right now.</p>
+            </div>
+
+            <!-- Right: Upload & Stage -->
+            <div class="admin-card">
+                <div class="card-header">
+                    <h2><i class="bi bi-plus-circle"></i> Create New Alert <span class="staged-badge" id="stagedBadge"
+                            style="display: none;">STAGED</span></h2>
+                </div>
+
+                <div class="drop-zone" id="dropZone">
+                    <i class="bi bi-cloud-arrow-up"></i>
+                    <p>Drag & Drop a new poster</p>
+                    <span>1080 × 1080 PNG/JPG/GIF (Max 5MB)</span>
+                </div>
+                <input type="file" id="fileInput" accept="image/jpeg, image/png, image/gif, image/webp">
+
+                <div id="previewContainer"
+                    style="display: none; flex-direction: column; align-items: center; gap: 1rem;">
+                    <div
+                        style="width: 100%; height: 300px; background: #000; border-radius: 12px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                        <img id="previewImage" src="" alt="Staged Preview"
+                            style="max-width: 100%; max-height: 300px; object-fit: contain;">
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 0.85rem; text-align: center;">Preview is set.
+                        Click <strong>Submit</strong> to replace the live poster.</p>
+                    <div class="btn-group">
+                        <button class="btn btn-danger" id="cancelBtn"
+                            style="padding: 0.5rem 1rem; font-size: 0.8rem;">Discard</button>
+                        <button class="btn btn-primary" id="uploadBtn"
+                            style="padding: 0.5rem 1.5rem; font-size: 0.8rem;">Submit & Go Live</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const previewContainer = document.getElementById('previewContainer');
+        const previewImage = document.getElementById('previewImage');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const toast = document.getElementById('toast');
+
+        let selectedFile = null;
+
+        // Handle clicks on drop zone
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        // Handle file selection
+        fileInput.addEventListener('change', handleFileSelect);
+
+        // Drag and drop handlers
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('drag-over');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('drag-over');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                handleFileSelect({ target: fileInput });
+            }
+        });
+
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // Validate type
+            const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            if (!validTypes.includes(file.type)) {
+                showToast('Invalid file type! Please upload JPG, PNG, WEBP or GIF.', 'error');
+                return;
+            }
+
+            // Validate size (5MB limit for localStorage safety)
+            if (file.size > 5 * 1024 * 1024) {
+                showToast('File too large! Please use images under 5MB for better performance.', 'error');
+                return;
+            }
+
+            selectedFile = file;
+            const reader = new FileReader();
+
+            // Show loading state
+            dropZone.innerHTML = '<i class="bi bi-hourglass-split"></i><p>Verifying Dimensions...</p>';
+
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => {
+                    // Critical Validation: Exactly 1080x1080
+                    if (img.width !== 1080 || img.height !== 1080) {
+                        showToast(`Invalid size: ${img.width}x${img.height}. Poster MUST be exactly 1080x1080.`, 'error');
+                        resetUpload();
+                        return;
+                    }
+
+                    previewImage.src = event.target.result;
+                    previewContainer.style.display = 'flex';
+                    dropZone.style.display = 'none';
+
+                    // Reset dropzone text for next time
+                    dropZone.innerHTML = '<i class="bi bi-cloud-arrow-up"></i><p>Drag & Drop a new poster</p><span>1080 × 1080 PNG/JPG/GIF (Max 5MB)</span>';
+
+                    showToast('Dimensions verified! Click Submit to push live.', 'success');
+                };
+                img.src = event.target.result;
+            };
+
+            reader.onerror = () => {
+                showToast('Error reading file!', 'error');
+                resetUpload();
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+        function resetUpload() {
+            selectedFile = null;
+            fileInput.value = '';
+            previewContainer.style.display = 'none';
+            dropZone.style.display = 'block';
+        }
+
+        cancelBtn.addEventListener('click', resetUpload);
+
+        uploadBtn.addEventListener('click', () => {
+            if (!selectedFile) return;
+
+            // Visual feedback
+            uploadBtn.innerHTML = '<i class="bi bi-arrow-repeat spin"></i> Submitting...';
+            uploadBtn.disabled = true;
+
+            const base64Data = previewImage.src;
+
+            // Add a small delay to simulate processing and give feedback
+            setTimeout(() => {
+                try {
+                    localStorage.setItem('internshipAlertAsset', base64Data);
+
+                    showToast('LIVE: Poster pushed to homepage successfully!', 'success');
+
+                    // Style the button as a permanent success state
+                    uploadBtn.innerHTML = '<i class="bi bi-check-lg"></i> Pushed Live';
+                    uploadBtn.style.background = 'var(--success-green)';
+
+                    setTimeout(() => {
+                        window.location.reload(); // Refresh to clear state
+                    }, 2000);
+
+                } catch (err) {
+                    console.error(err);
+                    if (err.name === 'QuotaExceededError') {
+                        showToast('Storage full! Try a smaller or compressed image.', 'error');
+                    } else {
+                        showToast('Submission failed! Please try again.', 'error');
+                    }
+                    uploadBtn.innerHTML = 'Submit & Go Live';
+                    uploadBtn.disabled = false;
+                }
+            }, 800);
+        });
+
+        function showToast(message, type) {
+            toast.innerText = message;
+            toast.style.background = type === 'success' ? 'var(--success-green)' : 'var(--danger-red)';
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 4000);
+        }
+
+        // CSS for spinner
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+            .spin {
+                display: inline-block;
+                animation: spin 1s linear infinite;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Check admin auth & load live preview
+        document.addEventListener('DOMContentLoaded', () => {
+            const isAdmin = sessionStorage.getItem('adminLoggedIn');
+            if (!isAdmin) {
+                alert("Restricted Access: Admin Login Required.");
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Load current live poster into admin preview
+            const currentLiveImg = document.getElementById('currentLiveImage');
+            const savedAlert = localStorage.getItem('internshipAlertAsset');
+            if (savedAlert && currentLiveImg) {
+                currentLiveImg.src = savedAlert;
+            }
+        });
+    </script>
+</body>
+
+</html>

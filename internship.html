@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internship | Indian Info Tech</title>
+    <link rel="icon" type="image/webp" href="IIT-icon.webp" />
+    <link rel="shortcut icon" type="image/webp" href="IIT-Photoroom.webp" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600 family=Outfit:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #F7A68A, #FF6A5E);
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --card-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        body {
+            font-family: 'Outfit', 'Barlow', sans-serif;
+            background-color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section with Image Overlay */
+        .internship-hero {
+            padding-top: 180px;
+            padding-bottom: 120px;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            text-align: center;
+            color: white;
+            border-radius: 0 0 50px 50px;
+            margin-bottom: -50px;
+            position: relative;
+        }
+
+        .internship-hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .internship-hero p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease;
+        }
+
+        .container-wide {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Overview Card */
+        .overview-card {
+            background: white;
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: var(--card-shadow);
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            animation: slideInUp 0.6s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .overview-content {
+            flex: 1;
+        }
+
+        .overview-content h2 {
+            color: #0e1a2a;
+            margin-bottom: 20px;
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+
+        .overview-content p {
+            color: #6c6c6c;
+            font-size: 1.15rem;
+            line-height: 1.8;
+        }
+
+        .overview-icon {
+            width: 140px;
+            height: 140px;
+            background: #fff5f2;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: #FF6A5E;
+            box-shadow: inset 0 0 20px rgba(255, 106, 94, 0.1);
+        }
+
+        /* Toggle Buttons - Modern Pill Style */
+        .toggle-section {
+            display: inline-flex;
+            background: #eee;
+            padding: 6px;
+            border-radius: 50px;
+            margin: 60px auto 40px;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .toggle-btn {
+            padding: 15px 50px;
+            border-radius: 50px;
+            border: none;
+            background: transparent;
+            color: #666;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 2;
+        }
+
+        .toggle-btn.active {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 8px 20px rgba(255, 106, 94, 0.4);
+        }
+
+        /* Course Grid & Cards */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 35px;
+            display: none;
+            margin-bottom: 120px;
+        }
+
+        .course-grid.active {
+            display: grid;
+            animation: blurIn 0.5s ease forwards;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+            transition: var(--transition);
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+            border-color: rgba(255, 106, 94, 0.3);
+        }
+
+        .course-icon {
+            width: 70px;
+            height: 70px;
+            background: #fdf2f0;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            color: #FF6A5E;
+            margin-bottom: 25px;
+            transition: var(--transition);
+        }
+
+        .course-card:hover .course-icon {
+            background: var(--primary-gradient);
+            color: white;
+            transform: rotate(10deg);
+        }
+
+        .course-card h3 {
+            font-size: 1.5rem;
+            color: #0e1a2a;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .course-card p {
+            color: #6c6c6c;
+            font-size: 1rem;
+            margin-bottom: 30px;
+            line-height: 1.7;
+            flex-grow: 1;
+        }
+
+        .apply-btn {
+            width: 100%;
+            padding: 15px;
+            border-radius: 15px;
+            border: 2px solid #FF6A5E;
+            background: transparent;
+            color: #FF6A5E;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1.05rem;
+        }
+
+        .apply-btn:hover {
+            background: var(--primary-gradient);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 106, 94, 0.3);
+        }
+
+        /* Modal Styling */
+        .apply-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(14, 26, 42, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 30px;
+            padding: 40px;
+            position: relative;
+            animation: modalScale 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .close-modal-btn {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #666;
+            transition: var(--transition);
+            background: none;
+            border: none;
+        }
+
+        .close-modal-btn:hover {
+            color: #FF6A5E;
+            transform: rotate(90deg);
+        }
+
+        .modal-content h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #0e1a2a;
+        }
+
+        .modal-content p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #0e1a2a;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #FF6A5E;
+            outline: none;
+            background: #fff9f8;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes blurIn {
+            from {
+                opacity: 0;
+                filter: blur(10px);
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                filter: blur(0);
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes modalScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .internship-hero h1 {
+                font-size: 3rem;
+            }
+
+            .overview-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 40px;
+            }
+        }
+
+        /* Details View Modal */
+        .details-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(14, 26, 42, 0.9);
+            backdrop-filter: blur(12px);
+            z-index: 10001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .details-content {
+            background: white;
+            width: 100%;
+            max-width: 800px;
+            border-radius: 40px;
+            padding: 50px;
+            position: relative;
+            animation: modalScale 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .details-header {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .details-icon {
+            width: 90px;
+            height: 90px;
+            background: #fff5f2;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #FF6A5E;
+        }
+
+        .details-title h2 {
+            font-size: 2.5rem;
+            color: #0e1a2a;
+            margin: 0;
+        }
+
+        .details-body {
+            color: #444;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .topic-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .topic-list li {
+            background: #f8fafc;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border-left: 4px solid #FF6A5E;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .topic-list li i {
+            color: #FF6A5E;
+        }
+
+        .apply-footer {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+            text-align: center;
+        }
+
+        .details-apply-btn {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255, 106, 94, 0.4);
+            transition: var(--transition);
+        }
+
+        .details-apply-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(255, 106, 94, 0.6);
+        }
+
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(37, 211, 102, 0.3);
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-decoration: none;
+            margin-top: 15px;
+        }
+
+        .whatsapp-btn:hover {
+            background: #20ba5a;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(37, 211, 102, 0.5);
+            color: white;
+        }
+
+        .apply-footer {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        @media (max-width: 600px) {
+
+            .whatsapp-btn,
+            .details-apply-btn {
+                width: 100%;
+                padding: 15px 30px;
+                font-size: 1.1rem;
+            }
+        }
+
+        .certificate-info {
+            margin-top: 25px;
+            padding: 15px 25px;
+            background: #fff5f2;
+            border-radius: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            border: 1px dashed #FF6A5E;
+            animation: fadeIn 1s ease;
+        }
+
+        .certificate-info i {
+            font-size: 1.5rem;
+            color: #FF6A5E;
+        }
+
+        .certificate-info p {
+            margin: 0;
+            color: #444;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="brand">
+            <img src="IIT-Photoroom.webp" alt="Indian Info Tech logo">
+        </div>
+        <button class="nav-toggle" aria-label="Toggle navigation"><i class="bi bi-list"></i></button>
+        <div class="nav-panel">
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="products.html">Products</a>
+                <a href="mou-section.html">MOU</a>
+                <div class="explore-dropdown">
+                    <button class="explore-toggle" type="button">
+                        Students Corner
+                        <span class="chevron"><i class="bi bi-caret-up-fill"></i></span>
+                    </button>
+                    <div class="explore-menu">
+                        <div class="menu-item has-child">
+                            <div class="menu-label">
+                                <button
+                                    style="border: none; background: none; font-weight: bold; font-size: 16px; color: rgb(77, 75, 75);"
+                                    onclick="window.location.href='teach_dashboard.html'">Courses</button>
+                            </div>
+                        </div>
+                        <div class="menu-item has-child">
+                            <div class="menu-label">
+                                <button
+                                    style="border: none; background: none; font-weight: bold; font-size: 16px; color: rgb(77, 75, 75);"
+                                    onclick="window.location.href='internship.html'">Internship</button>
+                            </div>
+                        </div>
+                        <div class="menu-item has-child">
+                            <div class="menu-label">
+                                Projects
+                            </div>
+                            <span class="chevron"><i class="bi bi-chevron-right"></i></span>
+                            <div class="sub-menu project-submenu">
+                                <a href="projects.html">CSE & IT</a>
+                                <a href="projects.html">AI</a>
+                                <a href="projects.html">EEE</a>
+                                <a href="projects.html">ECE</a>
+                                <a href="projects.html">Mechatronics</a>
+                                <a href="projects.html">Mechanical</a>
+                                <a href="projects.html">Civil</a>
+                                <a href="projects.html">IOT</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="auth-links">
+                <button data-action="signup" onclick="openAuthModal('signup')">Sign Up</button>
+                <button data-action="login" onclick="openAuthModal('login')">Login</button>
+                <button data-action="logout" class="hide">Logout</button>
+                <span class="signed-in hide" data-status="signed-in">Signed in</span>
+            </div>
+        </div>
+    </nav>
+
+    <header class="internship-hero">
+        <div class="container-wide">
+            <h1>Accelerate Your Future</h1>
+            <p>Elevate your potential with hands-on internships at Indian Info Tech. Work on cutting-edge projects,
+                learn from experts, and build a career that matters.</p>
+        </div>
+    </header>
+
+    <main class="container-wide">
+        <!-- Internship Overview -->
+        <section class="overview-card">
+            <div class="overview-icon">
+                <i class="bi bi-rocket-takeoff"></i>
+            </div>
+            <div class="overview-content">
+                <h2>Innovative Learning Ecosystem</h2>
+                <p>Our internship program is meticulously crafted to empower the next generation of engineers and
+                    developers. At Indian Info Tech, you won't just learn — you will create, solve, and lead. We provide
+                    a bridge between theoretical knowledge and industry excellence through real-world hardware and
+                    software integrations.</p>
+                <div class="certificate-info">
+                    <i class="bi bi-truck"></i>
+                    <p>Once the internship is completed, we will deliver a hard copy of the certificate to your home.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Toggle Buttons -->
+        <div class="toggle-section">
+            <button class="toggle-btn active" onclick="showSection('software')">
+                <i class="bi bi-code-slash"></i> Software
+            </button>
+            <button class="toggle-btn" onclick="showSection('hardware')">
+                <i class="bi bi-cpu"></i> Hardware
+            </button>
+        </div>
+
+        <!-- Software Section -->
+        <div id="software" class="course-grid active">
+            <!-- C -->
+            <article class="course-card" onclick="openDetailsView('C Programming')">
+                <div class="course-icon"><i class="bi bi-braces"></i></div>
+                <h3>C Programming</h3>
+                <p>Foundations of professional coding. Learn memory architecture, optimize logic, and build robust
+                    systems.</p>
+                <button class="apply-btn">View Details <i class="bi bi-arrow-right"></i></button>
+            </article>
+
+            <!-- C++ -->
+            <article class="course-card" onclick="openDetailsView('C++ Development')">
+                <div class="course-icon"><i class="bi bi-plus-lg"></i></div>
+                <h3>C++ Development</h3>
+                <p>Object-Oriented Excellence. Master advanced concepts used in high-performance engines and systems.
+                </p>
+                <button class="apply-btn">View Details <i class="bi bi-arrow-right"></i></button>
+            </article>
+
+            <!-- Java -->
+            <article class="course-card" onclick="openDetailsView('Java')">
+                <div class="course-icon"><i class="bi bi-cup-hot"></i></div>
+                <h3>Java</h3>
+                <p>Scalable backend architectures. Build enterprise-ready applications with Java and modern frameworks.
+                </p>
+                <button class="apply-btn">View Details <i class="bi bi-arrow-right"></i></button>
+            </article>
+
+            <!-- Python -->
+            <article class="course-card" onclick="openDetailsView('Python')">
+                <div class="course-icon"><i class="bi bi-terminal"></i></div>
+                <h3>Python</h3>
+                <p>The language of the future. From automation scripts to complex algorithms, master Python's
+                    versatility.</p>
+                <button class="apply-btn">View Details <i class="bi bi-arrow-right"></i></button>
+            </article>
+
+            <!-- Web Dev -->
+            <article class="course-card" onclick="openDetailsView('Full-Stack Web')">
+                <div class="course-icon"><i class="bi bi-globe"></i></div>
+                <h3>Full-Stack Development</h3>
+                <p>Create dynamic web experiences. Master the modern stack from responsive CSS to powerful React
+                    frontends.</p>
+                <button class="apply-btn">View Details <i class="bi bi-arrow-right"></i></button>
+            </article>
+
+            <!-- Machine Learning -->
+            <article class="course-card" onclick="openDetailsView('Machine Learning')">
+                <div class="course-icon"><i class="bi bi-diagram-3"></i></div>
+                <h3>Machine Learning</h3>
+                <p>Unlock data potential. Implement predictive models and statistical algorithms using industry-standard
+                    tools.</p>
+                <button class="apply-btn">View Details <i class="bi bi-arrow-right"></i></button>
+            </article>
+
+            <!-- AI & DS -->
+            <article class="course-card" onclick="openDetailsView('AI & Data Science')">
+                <div class="course-icon"><i class="bi bi-robot"></i></div>
+                <h3>AI & Data Science</h3>
+                <p>Intelligence at scale. Deep dive into neural networks, data mining, and sophisticated AI
+                    architectures.</p>
+                <button class="apply-btn">View Details <i class="bi bi-arrow-right"></i></button>
+            </article>
+
+            <!-- Android -->
+            <article class="course-card" onclick="openDetailsView('Mobile Development')">
+                <div class="course-icon"><i class="bi bi-android2"></i></div>
+                <h3>Mobile Development</h3>
+                <p>The world in a pocket. Build native Android apps with Kotlin and integrate advanced cloud-based
+                    features.</p>
+                <button class="apply-btn">View Details <i class="bi bi-arrow-right"></i></button>
+            </article>
+
+            <!-- UI/UX -->
+            <article class="course-card" onclick="openDetailsView('UI/UX Design')">
+                <div class="course-icon"><i class="bi bi-palette"></i></div>
+                <h3>UI/UX Design</h3>
+                <p>Design that inspires. Learn user psychology, prototyping in Figma, and creating beautiful, intuitive
+                    journeys.</p>
+                <button class="apply-btn">View Details <i class="bi bi-arrow-right"></i></button>
+            </article>
+        </div>
+
+        <!-- Hardware Section -->
+        <div id="hardware" class="course-grid">
+            <!-- Arduino -->
+            <article class="course-card" onclick="openDetailsView('Arduino Systems')">
+                <div class="course-icon"><i class="bi bi-motherboard"></i></div>
+                <h3>Arduino Systems</h3>
+                <p>Prototyping with precision. Interfacing sensors with microcontrollers to bring your hardware ideas to
+                    life.</p>
+                <button class="apply-btn">View Details <i class="bi bi-arrow-right"></i></button>
+            </article>
+
+            <!-- IOT -->
+            <article class="course-card" onclick="openDetailsView('IoT Ecosystems')">
+                <div class="course-icon"><i class="bi bi-router"></i></div>
+                <h3>IoT Ecosystems</h3>
+                <p>Connecting the physical world. Build smart systems using ESP32, MQTT protocols, and cloud monitoring.
+                </p>
+                <button class="apply-btn">View Details <i class="bi bi-arrow-right"></i></button>
+            </article>
+
+            <!-- Robotics -->
+            <article class="course-card" onclick="openDetailsView('Robotics Lab')">
+                <div class="course-icon"><i class="bi bi-robot"></i></div>
+                <h3>Robotics Lab</h3>
+                <p>Automation in motion. Design autonomous robots focusing on kinematics, control loops, and vision
+                    systems.</p>
+                <button class="apply-btn">View Details <i class="bi bi-arrow-right"></i></button>
+            </article>
+
+            <!-- PCB Design -->
+            <article class="course-card" onclick="openDetailsView('Professional PCB')">
+                <div class="course-icon"><i class="bi bi-layers"></i></div>
+                <h3>Professional PCB</h3>
+                <p>Industrial circuit design. From multi-layer schematics to manufacturing-ready PCB layouts with KiCad.
+                </p>
+                <button class="apply-btn">View Details <i class="bi bi-arrow-right"></i></button>
+            </article>
+
+            <!-- 3D Printing -->
+            <article class="course-card" onclick="openDetailsView('3D Manufacturing')">
+                <div class="course-icon"><i class="bi bi-box-seam"></i></div>
+                <h3>3D Manufacturing</h3>
+                <p>Shape your ideas. Master 3D modeling and rapid prototyping using advanced additive manufacturing
+                    tech.</p>
+                <button class="apply-btn">View Details <i class="bi bi-arrow-right"></i></button>
+            </article>
+
+            <!-- PLC -->
+            <article class="course-card" onclick="openDetailsView('Industrial PLC')">
+                <div class="course-icon"><i class="bi bi-gear-wide-connected"></i></div>
+                <h3>Industrial PLC</h3>
+                <p>Core of industry 4.0. Learn ladder logic, HMI design, and automation for manufacturing environments.
+                </p>
+                <button class="apply-btn">View Details <i class="bi bi-arrow-right"></i></button>
+            </article>
+        </div>
+    </main>
+
+    <!-- Details View Modal -->
+    <div class="details-modal" id="detailsModal">
+        <div class="details-content">
+            <button class="close-modal-btn" onclick="closeDetailsView()">&times;</button>
+            <div id="detailsViewTarget">
+                <!-- Content injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Modal -->
+    <div class="apply-modal" id="applyModal">
+        <div class="modal-content">
+            <button class="close-modal-btn" onclick="closeApplyModal()">&times;</button>
+            <h2>Apply for Internship</h2>
+            <p>Fill out the form below to start your journey in <span id="selectedCourseName"></span>.</p>
+
+            <!-- <form id="internshipApplyForm">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" placeholder="Enter your mobile number" required>
+                </div>
+                <div class="form-group">
+                    <label>Current Status</label>
+                    <select required>
+                        <option value="">Select Status</option>
+                        <option>Student</option>
+                        <option>Graduate</option>
+                        <option>Professional</option>
+                    </select>
+                </div> -->
+            <!-- <button type="submit" class="apply-btn"
+                    style="background: var(--primary-gradient); color: white; border: none;">Submit Application</button> -->
+
+            <!-- <div style="text-align: center; margin-top: 20px; position: relative;">
+                    <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+                    <span
+                        style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 0 15px; color: #999; font-size: 0.9rem;">OR</span>
+                </div> -->
+
+            <a id="whatsappApplyLink" href="#" target="_blank" class="whatsapp-btn"
+                style="width: 100%; margin-top: 20px;">
+                Apply via WhatsApp <i class="bi bi-whatsapp"></i>
+            </a>
+            </form>
+        </div>
+    </div>
+
+    <section class="section" id="contact">
+        <div class="section-heading">
+            <h2>Contact & Admissions</h2>
+            <p>Research us in Namakkal, Tamil Nadu</p>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <p><strong>Phone:</strong> +91 90034 46612</p>
+                <p><strong>Email:</strong> iitdetails@gmail.com</p>
+                <p><strong>Location:</strong> Namakkal, Tamil Nadu, India</p>
+            </div>
+            <div class="contact-map">
+                <iframe title="Namakkal Map"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3913.573081914043!2d78.16402797477133!3d11.219189450871369!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3babce8c90cd0ef3%3A0x6a354282bc947aa1!2sIndian%20Info%20Tech!5e0!3m2!1sen!2sin!4v1764400830341!5m2!1sen!2sin"
+                    width="100" height="290" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <div class="contact-form-wrapper">
+                <form class="contact-form" name="contact-form1" action="" method="post">
+                    <h3 class="form-title">Send us a Message</h3>
+                    <label>
+                        Name
+                        <input type="text" name="name" id='name' placeholder="Enter your full name" required />
+                    </label>
+                    <label>
+                        Email
+                        <input type="email" name="email" id='email' placeholder="Enter your email address" required />
+                    </label>
+                    <label>
+                        Message
+                        <textarea name="message" rows="4" id='message' placeholder="Write your message here..."
+                            required></textarea>
+                    </label>
+                    <button type="submit" value="Submit" id="submit" class="primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer" id="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h3>Indian Info Tech</h3>
+                <p>
+                    Research & Development Center enabling students, hobbyists, and professionals to build
+                    production-ready IoT, software, and hardware solutions with expert mentorship.
+                </p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="products.html">Products</a>
+                <a href="mou-section.html">MOU</a>
+                <a href="products.html">Projects</a>
+                <a href="internship.html">Internship</a>
+                <a href="courses.html">Courses</a>
+                <a href="contact">Contact</a>
+            </div>
+            <div class="footer-links">
+                <h4>Programs</h4>
+                <a href="courses.html">IoT Prototyping</a>
+                <a href="courses.html">Full-Stack Systems</a>
+                <a href="courses.html">Embedded Firmware</a>
+                <a href="#projects">Innovation Labs</a>
+            </div>
+            <div class="footer-contact">
+                <h4>Contact</h4>
+                <p>+91 90034 46612</p>
+                <p>iitdetails@gmail.com</p>
+                <p>Namakkal, Tamil Nadu, India</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© <span id="year"></span> Indian Info Tech. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js" defer></script>
+    <script>
+        function showSection(sectionId) {
+            // Toggle buttons
+            document.querySelectorAll('.toggle-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.innerText.toLowerCase().includes(sectionId)) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Toggle sections
+            document.querySelectorAll('.course-grid').forEach(grid => {
+                grid.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // Course Data
+        const courseDetails = {
+            'C Programming': {
+                icon: 'bi-braces',
+                desc: 'Master the fundamental low-level language that powers modern computing. Our C internship focuses on memory management, pointers, and building highly efficient software systems.',
+                topics: ['Pointer Arithmetic', 'Memory Management', 'File Handling', 'Data Structures', 'Algorithm Logic', 'Standard Libraries']
+            },
+            'C++ Development': {
+                icon: 'bi-plus-lg',
+                desc: 'Master Object-Oriented Programming (OOP) with C++. This program covers high-performance application development and system-level architectures used in gaming and enterprise software.',
+                topics: ['Classes & Objects', 'Inheritance & Polymorphism', 'STL (Standard Template Library)', 'Multi-threading', 'Socket Programming', 'Design Patterns']
+            },
+            'Java': {
+                icon: 'bi-cup-hot',
+                desc: 'Build robust, scalable enterprise applications. Our Java internship covers everything from core syntax to modern framework integration for high-traffic environments.',
+                topics: ['Core Java Fundamentals', 'JVM Architecture', 'Hibernate ORM', 'Spring Boot Basics', 'Microservices', 'Database Connectivity']
+            },
+            'Python': {
+                icon: 'bi-terminal',
+                desc: 'Experience the versatility of Python. Learn to automate tasks, analyze data, and build powerful backend systems with the world\'s most popular language.',
+                topics: ['Scripting & Automation', 'Pandas & NumPy', 'Django Framework', 'API Development', 'Regular Expressions', 'Unit Testing']
+            },
+            'Full-Stack Web': {
+                icon: 'bi-globe',
+                desc: 'Become a complete developer. Master both frontend craftsmanship and backend logic to deploy full production-ready web applications from scratch.',
+                topics: ['HTML5 & Modern CSS', 'JavaScript (ES6+)', 'ReactJS Frontend', 'Node.js Backend', 'MongoDB / SQL', 'CI/CD Deployment']
+            },
+            'Machine Learning': {
+                icon: 'bi-diagram-3',
+                desc: 'Transform data into intelligence. Learn the mathematical foundations and library implementations that allow machines to learn from experience.',
+                topics: ['Regression & Classification', 'Neural Networks', 'Scikit-Learn', 'TensorFlow Basics', 'Data Visualization', 'Feature Engineering']
+            },
+            'AI & Data Science': {
+                icon: 'bi-robot',
+                desc: 'Unlock the power of large-scale intelligence. This program focuses on deep learning, data mining, and building sophisticated AI solutions for real-world problems.',
+                topics: ['Deep Learning', 'Computer Vision', 'Natural Language Processing', 'Data Cleaning', 'Big Data Ethics', 'Predictive Analysis']
+            },
+            'Mobile Development': {
+                icon: 'bi-android2',
+                desc: 'Join the mobile revolution. Build native Android applications with a focus on performance, user experience, and cloud-storage integration.',
+                topics: ['Android Studio / Kotlin', 'Material Design UI', 'Retrofit API Calls', 'Firebase Integration', 'State Management', 'App Launch Prep']
+            },
+            'UI/UX Design': {
+                icon: 'bi-palette',
+                desc: 'Bridge the gap between technology and humans. Learn the art of User Experience and the precision of User Interface design using industry tools.',
+                topics: ['Figma Prototyping', 'User Research', 'Wireframing', 'Color Theory', 'Visual Hierarchy', 'Interactive Motion']
+            },
+            'Arduino Systems': {
+                icon: 'bi-motherboard',
+                desc: 'Bring hardware to life. Our Arduino internship covers everything from circuit fundamentals to interfacing complex sensors and actuators.',
+                topics: ['Circuit Theory', 'Sensor Interfacing', 'Motor Control', 'Power Management', 'SPI/I2C Protocols', 'Hardware Troubleshooting']
+            },
+            'IoT Ecosystems': {
+                icon: 'bi-router',
+                desc: 'Build the connected future. Master the protocols and hardware required to bridge the gap between physical objects and the internet.',
+                topics: ['ESP32 / ESP8266', 'MQTT & HTTP Protocols', 'Real-time Dashboards', 'Cloud Integration', 'Edge Computing', 'OTA Updates']
+            },
+            'Robotics Lab': {
+                icon: 'bi-robot',
+                desc: 'Design autonomous motion. This internship covers the mechanics, electronics, and software required to build intelligent machines.',
+                topics: ['Kinematics', 'Actuators & Servos', 'Control Systems (PID)', 'Obstacle Avoidance', 'Image Processing Basics', 'Autonomous Navigation']
+            },
+            'Professional PCB': {
+                icon: 'bi-layers',
+                desc: 'Design industrial-grade circuits. Learn the standard workflow for creating professional, manufacturing-ready printed circuit boards.',
+                topics: ['Schematic Capture', 'Multi-layer Routing', 'Component Footprints', 'Signal Integrity', 'BOM Management', 'Gerber Generation']
+            },
+            '3D Manufacturing': {
+                icon: 'bi-box-seam',
+                desc: 'Turn digital files into physical objects. Master the CAD modeling and slicing techniques required for professional 3D printing and rapid prototyping.',
+                topics: ['Autodesk Fusion 360', 'Slicing Algorithms', 'Filament Properties', 'Mechanical Tolerances', 'Structural Integrity', 'Support Strategies']
+            },
+            'Industrial PLC': {
+                icon: 'bi-gear-wide-connected',
+                desc: 'Master the backbone of industrial automation. Learn ladder logic and HMI design used to control modern manufacturing facilities.',
+                topics: ['Ladder Logic Programming', 'HMI Interface Design', 'Industrial Sensors', 'Variable Frequency Drives', 'Safety Interlocks', 'SCADA Integration']
+            }
+        };
+
+        function openDetailsView(courseId) {
+            const data = courseDetails[courseId];
+            if (!data) return;
+
+            const target = document.getElementById('detailsViewTarget');
+            let topicsHtml = data.topics.map(t => `<li><i class="bi bi-check2-circle"></i> ${t}</li>`).join('');
+
+            target.innerHTML = `
+                <div class="details-header">
+                    <div class="details-icon"><i class="bi ${data.icon}"></i></div>
+                    <div class="details-title">
+                        <h2>${courseId}</h2>
+                    </div>
+                </div>
+                <div class="details-body">
+                    <p>${data.desc}</p>
+                    <h3 style="margin-top: 30px; font-weight: 700;">What you'll cover:</h3>
+                    <ul class="topic-list">
+                        ${topicsHtml}
+                    </ul>
+                </div>
+                <div class="apply-footer">
+                    <a href="https://wa.me/919994719302?text=${encodeURIComponent(`Hi, I want to apply for the ${courseId} internship.
+
+Name:
+Mail ID:
+Phone Number:
+Qualification:`)}" 
+                       target="_blank" class="whatsapp-btn">
+                        Apply on WhatsApp <i class="bi bi-whatsapp"></i>
+                    </a>
+                </div>
+            `;
+
+            document.getElementById('detailsModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDetailsView() {
+            document.getElementById('detailsModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Modal Functions
+        function openApplyModal(courseName) {
+            document.getElementById('selectedCourseName').innerText = courseName;
+
+            // Update WhatsApp link
+            const waMsg = encodeURIComponent(`Hi, I want to apply for the ${courseName} internship.
+
+Name:
+Mail ID:
+Phone Number:
+Qualification:`);
+            document.getElementById('whatsappApplyLink').href = `https://wa.me/919994719302?text=${waMsg}`;
+
+            document.getElementById('applyModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent scroll
+        }
+
+        function closeApplyModal() {
+            document.getElementById('applyModal').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restore scroll
+        }
+
+        // Close on outside click
+        window.onclick = function (event) {
+            const applyModal = document.getElementById('applyModal');
+            const detailsModal = document.getElementById('detailsModal');
+            if (event.target == applyModal) closeApplyModal();
+            if (event.target == detailsModal) closeDetailsView();
+        }
+
+        // Form submission
+        document.getElementById('internshipApplyForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            alert('Application submitted successfully! Our team will contact you soon.');
+            closeApplyModal();
+            this.reset();
+        });
+    </script>
+
+
+</body>
+
+</html>

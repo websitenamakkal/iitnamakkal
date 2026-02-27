@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear User Data - Indian Info Tech</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .warning h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .warning ul {
+            text-align: left;
+            color: #856404;
+            margin-left: 20px;
+        }
+
+        .warning li {
+            margin: 5px 0;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+        }
+
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .result.success {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+            display: block;
+        }
+
+        .result.info {
+            background: #d1ecf1;
+            border: 2px solid #17a2b8;
+            color: #0c5460;
+            display: block;
+        }
+
+        .data-list {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .data-list h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .data-item {
+            padding: 10px;
+            background: white;
+            margin: 5px 0;
+            border-radius: 5px;
+            border-left: 4px solid #667eea;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .user-card {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .user-info-display {
+            flex: 1;
+        }
+
+        .user-info-edit {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .user-info-edit.active {
+            display: flex;
+        }
+
+        .edit-input {
+            padding: 8px 12px;
+            border: 2px solid #667eea;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+
+        .edit-input:focus {
+            outline: none;
+            border-color: #764ba2;
+        }
+
+        .btn-edit,
+        .btn-save {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-edit {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #5568d3;
+            transform: translateY(-1px);
+        }
+
+        .btn-save {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background: #218838;
+            transform: translateY(-1px);
+        }
+
+        .btn-view-courses {
+            padding: 6px 12px;
+            background: #17a2b8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .btn-view-courses:hover {
+            background: #138496;
+        }
+
+        .user-courses {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .user-courses.active {
+            display: block;
+        }
+
+        .course-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="icon">🗑️</div>
+        <h1>Clear All User Data</h1>
+        <p>This will permanently delete all user data from your browser's local storage.</p>
+
+        <div class="warning">
+            <h3>⚠️ Warning: This action cannot be undone!</h3>
+            <ul>
+                <li>All registered user accounts will be deleted</li>
+                <li>All course progress will be lost</li>
+                <li>All completion certificates will be removed</li>
+                <li>Current login session will be cleared</li>
+            </ul>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-cancel" onclick="window.location.href='index.html'">Cancel</button>
+            <button class="btn-danger" onclick="showCurrentData()">View Current Data</button>
+            <button class="btn-danger" onclick="confirmClear()">Clear All Data</button>
+        </div>
+
+        <div id="result" class="result"></div>
+        <div id="dataDisplay"></div>
+    </div>
+
+    <script>
+        function showCurrentData() {
+            const dataDisplay = document.getElementById('dataDisplay');
+            const result = document.getElementById('result');
+
+            // Get all localStorage keys
+            const allKeys = Object.keys(localStorage);
+            const userKeys = allKeys.filter(key =>
+                key === 'registeredUsers' ||
+                key === 'loggedInUser' ||
+                key.startsWith('progress-') ||
+                key.startsWith('date-')
+            );
+
+            if (userKeys.length === 0) {
+                result.className = 'result info';
+                result.innerHTML = '<strong>ℹ️ No user data found</strong><br>Your browser storage is already clean.';
+                dataDisplay.innerHTML = '';
+                return;
+            }
+
+            // Display data
+            let html = '<div class="data-list"><h3>Registered Users:</h3>';
+
+            // Show registered users with edit functionality
+            const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+            if (registeredUsers.length > 0) {
+                registeredUsers.forEach((user, index) => {
+                    const purchasedCourses = user.purchasedCourses || [];
+                    const coursesArray = Array.isArray(purchasedCourses) ? purchasedCourses : [purchasedCourses];
+
+                    html += `
+                        <div class="user-card" id="user-card-${index}">
+                            <div class="user-card-header">
+                                <div class="user-info-display" id="display-${index}">
+                                    <strong>👤 ${user.fullname || user.name || 'Unknown'}</strong><br>
+                                    <span style="color: #666;">📧 ${user.email}</span>
+                                </div>
+                                <div>
+                                    <button class="btn-edit" onclick="toggleEdit(${index})">✏️ Edit</button>
+                                    ${coursesArray.length > 0 ? `<button class="btn-view-courses" onclick="toggleCourses(${index})">📚 Courses (${coursesArray.length})</button>` : ''}
+                                </div>
+                            </div>
+                            
+                            <div class="user-info-edit" id="edit-${index}">
+                                <input type="text" class="edit-input" id="name-${index}" value="${user.fullname || user.name || ''}" placeholder="Full Name">
+                                <input type="email" class="edit-input" id="email-${index}" value="${user.email || ''}" placeholder="Email">
+                                <button class="btn-save" onclick="saveUser(${index})">💾 Save Changes</button>
+                            </div>
+                            
+                            ${coursesArray.length > 0 ? `
+                                <div class="user-courses" id="courses-${index}">
+                                    <strong>Enrolled Courses:</strong><br>
+                                    ${coursesArray.map(course => `<span class="course-badge">${course}</span>`).join('')}
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+            } else {
+                html += '<p style="color: #666;">No registered users found.</p>';
+            }
+
+            html += '</div>';
+            dataDisplay.innerHTML = html;
+
+            result.className = 'result info';
+            result.innerHTML = `<strong>ℹ️ Found ${registeredUsers.length} registered user(s)</strong><br>Click Edit to modify user information or View Courses to see enrolled courses.`;
+        }
+
+        function toggleEdit(index) {
+            const displayDiv = document.getElementById(`display-${index}`);
+            const editDiv = document.getElementById(`edit-${index}`);
+
+            if (editDiv.classList.contains('active')) {
+                editDiv.classList.remove('active');
+                displayDiv.style.display = 'block';
+            } else {
+                editDiv.classList.add('active');
+                displayDiv.style.display = 'none';
+            }
+        }
+
+        function saveUser(index) {
+            const newName = document.getElementById(`name-${index}`).value.trim();
+            const newEmail = document.getElementById(`email-${index}`).value.trim();
+
+            if (!newName || !newEmail) {
+                alert('⚠️ Please fill in both name and email fields.');
+                return;
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(newEmail)) {
+                alert('⚠️ Please enter a valid email address.');
+                return;
+            }
+
+            // Get registered users
+            const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+
+            // Check if email is already used by another user
+            const emailExists = registeredUsers.some((user, idx) =>
+                idx !== index && user.email.toLowerCase() === newEmail.toLowerCase()
+            );
+
+            if (emailExists) {
+                alert('⚠️ This email is already registered to another user.');
+                return;
+            }
+
+            // Store old email for updating progress keys
+            const oldEmail = registeredUsers[index].email;
+
+            // Update user data
+            registeredUsers[index].fullname = newName;
+            registeredUsers[index].name = newName;
+            registeredUsers[index].email = newEmail;
+
+            // Save to localStorage
+            localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+
+            // Update loggedInUser if this is the logged-in user
+            const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+            if (loggedInUser && loggedInUser.email === oldEmail) {
+                loggedInUser.fullname = newName;
+                loggedInUser.name = newName;
+                loggedInUser.email = newEmail;
+                localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser));
+            }
+
+            // Update progress keys if email changed
+            if (oldEmail !== newEmail) {
+                updateProgressKeys(oldEmail, newEmail);
+            }
+
+            alert('✅ User information updated successfully!');
+            showCurrentData(); // Refresh display
+        }
+
+        function updateProgressKeys(oldEmail, newEmail) {
+            const oldIdentifier = oldEmail.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+            const newIdentifier = newEmail.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+
+            const allKeys = Object.keys(localStorage);
+            const progressKeys = allKeys.filter(key => key.includes(oldIdentifier));
+
+            progressKeys.forEach(oldKey => {
+                const newKey = oldKey.replace(oldIdentifier, newIdentifier);
+                const data = localStorage.getItem(oldKey);
+                localStorage.setItem(newKey, data);
+                localStorage.removeItem(oldKey);
+            });
+        }
+
+        function toggleCourses(index) {
+            const coursesDiv = document.getElementById(`courses-${index}`);
+            coursesDiv.classList.toggle('active');
+        }
+
+        function confirmClear() {
+            if (!confirm('⚠️ Are you absolutely sure?\n\nThis will delete ALL user data including:\n• All registered accounts\n• All course progress\n• All certificates\n\nThis action CANNOT be undone!')) {
+                return;
+            }
+
+            // Second confirmation
+            if (!confirm('⚠️ FINAL WARNING!\n\nClick OK to permanently delete all user data.\nClick Cancel to keep your data.')) {
+                return;
+            }
+
+            clearAllData();
+        }
+
+        function clearAllData() {
+            const result = document.getElementById('result');
+            const dataDisplay = document.getElementById('dataDisplay');
+
+            try {
+                // Get count before clearing
+                const allKeys = Object.keys(localStorage);
+                const userKeys = allKeys.filter(key =>
+                    key === 'registeredUsers' ||
+                    key === 'loggedInUser' ||
+                    key.startsWith('progress-') ||
+                    key.startsWith('date-')
+                );
+
+                const count = userKeys.length;
+
+                // Clear specific user-related data
+                localStorage.removeItem('registeredUsers');
+                localStorage.removeItem('loggedInUser');
+
+                // Clear all progress and date keys
+                allKeys.forEach(key => {
+                    if (key.startsWith('progress-') || key.startsWith('date-')) {
+                        localStorage.removeItem(key);
+                    }
+                });
+
+                // Also clear session storage
+                sessionStorage.clear();
+
+                result.className = 'result success';
+                result.innerHTML = `
+                    <strong>✅ Success!</strong><br>
+                    Deleted ${count} data items from storage.<br>
+                    All user data has been permanently removed.<br>
+                    <a href="index.html" class="back-link">← Go to Home Page</a>
+                `;
+                dataDisplay.innerHTML = '';
+
+            } catch (error) {
+                result.className = 'result';
+                result.style.background = '#f8d7da';
+                result.style.border = '2px solid #dc3545';
+                result.style.color = '#721c24';
+                result.style.display = 'block';
+                result.innerHTML = `<strong>❌ Error:</strong><br>${error.message}`;
+            }
+        }
+
+        // Auto-show current data on load
+        window.addEventListener('DOMContentLoaded', showCurrentData);
+    </script>
+</body>
+
+</html>
