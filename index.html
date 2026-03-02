@@ -204,7 +204,8 @@
       <style>
         .internship-alert-box {
           width: 500px;
-          height: 500px;
+          height: auto;
+          min-height: 300px;
           max-width: 100%;
           background: #f1f5f9;
           border-radius: 12px;
@@ -223,7 +224,6 @@
           .internship-alert-box {
             width: 100%;
             height: auto;
-            aspect-ratio: 1 / 1;
           }
 
           iframe {
@@ -239,8 +239,8 @@
 
         .internship-alert-box img {
           width: 100%;
-          height: 100%;
-          object-fit: cover;
+          height: auto;
+          object-fit: contain;
           display: block;
           transition: filter 0.3s ease;
         }
