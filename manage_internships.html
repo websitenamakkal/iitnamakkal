@@ -322,11 +322,18 @@
                 <div
                     style="flex-grow: 1; display: flex; align-items: center; justify-content: center; background: #000; border-radius: 12px; overflow: hidden; min-height: 300px;">
                     <img id="currentLiveImage"
-                        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHpxbm5nZ25nZ25nZ25nZ25nZ25nZ25nZ25nZ25nZ25nZ25nZ25nJmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/u04bOWYy7pY/giphy.gif"
+                        src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3ZicXNnZ3NnZ3NnZ3NnZ3NnZ3NnZ3NnZ3NnZ3NnZ3NnZ3NnJmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/M9O6YUp9XfXfX/giphy.gif"
                         alt="Current Live Poster"
                         style="max-width: 100%; height: auto; max-height: 600px; object-fit: contain;">
                 </div>
-                <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 1rem; text-align: center;">This
+                <div style="padding: 1rem; display: flex; justify-content: center; gap: 1rem;">
+                    <button class="btn btn-danger" id="deleteLiveBtn"
+                        style="padding: 0.5rem 1rem; font-size: 0.8rem; width: 100%;">
+                        <i class="bi bi-trash"></i> Remove Current Poster
+                    </button>
+                </div>
+                <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.5rem; text-align: center;">
+                    This
                     is what students see on the homepage right now.</p>
             </div>
 
@@ -342,6 +349,19 @@
                     <p>Drag & Drop a new poster</p>
                     <span>PNG/JPG/GIF (Max 10MB)</span>
                 </div>
+                
+                <div style="margin: -1rem 0 1.5rem 0; text-align: center; color: var(--text-secondary); font-size: 0.9rem;">
+                    — OR —
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="text" id="urlInput" placeholder="Paste image URL here..." 
+                            style="flex-grow: 1; padding: 0.8rem; border-radius: 10px; border: 1px solid var(--border-color); background: rgba(255,255,255,0.05); color: white; outline: none; transition: border-color 0.3s ease;">
+                        <button class="btn btn-primary" id="urlPreviewBtn" style="padding: 0.8rem 1.2rem; font-size: 0.8rem; min-width: 100px;">Preview</button>
+                    </div>
+                </div>
+
                 <input type="file" id="fileInput" accept="image/jpeg, image/png, image/gif, image/webp">
 
                 <div id="previewContainer"
@@ -376,6 +396,29 @@
         const toast = document.getElementById('toast');
 
         let selectedFile = null;
+
+        const urlInput = document.getElementById('urlInput');
+        const urlPreviewBtn = document.getElementById('urlPreviewBtn');
+
+        // Handle URL preview
+        urlPreviewBtn.addEventListener('click', () => {
+            const url = urlInput.value.trim();
+            if (!url) {
+                showToast('Please enter a valid URL', 'error');
+                return;
+            }
+
+            // Simple validation for common image extensions
+            if (!url.match(/\.(jpeg|jpg|gif|png|webp|avif)/i) && !url.includes('giphy.com')) {
+                 if (!confirm('This URL doesn\'t look like a direct image link. Try anyway?')) return;
+            }
+
+            previewImage.src = url;
+            previewContainer.style.display = 'flex';
+            dropZone.style.display = 'none';
+            selectedFile = { name: 'Remote URL', type: 'image/url', size: 0 }; // Mock selectedFile
+            showToast('Previewing image from URL', 'success');
+        });
 
         // Handle clicks on drop zone
         dropZone.addEventListener('click', () => fileInput.click());
@@ -448,6 +491,7 @@
         function resetUpload() {
             selectedFile = null;
             fileInput.value = '';
+            urlInput.value = '';
             previewContainer.style.display = 'none';
             dropZone.style.display = 'block';
         }
@@ -499,6 +543,16 @@
                 toast.style.display = 'none';
             }, 4000);
         }
+
+        // Live Delete Logic
+        const deleteLiveBtn = document.getElementById('deleteLiveBtn');
+        deleteLiveBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to remove the current live poster? It will be replaced with the default animation on the homepage.')) {
+                localStorage.removeItem('internshipAlertAsset');
+                showToast('Poster removed successfully!', 'success');
+                setTimeout(() => window.location.reload(), 1500);
+            }
+        });
 
         // CSS for spinner
         const style = document.createElement('style');
