@@ -306,18 +306,16 @@
 
           const loadAlert = () => {
             const savedAlert = localStorage.getItem('internshipAlertAsset');
-            if (savedAlert) {
-              banner.src = savedAlert;
-            } else {
-              // Default animated GIF if nothing is uploaded
-              banner.src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3ZicXNnZ3NnZ3NnZ3NnZ3NnZ3NnZ3NnZ3NnZ3NnZ3NnZ3NnJmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZCZjdD1n/M9O6YUp9XfXfX/giphy.gif";
+            // Only overwrite if it looks like a valid image (http or data URI)
+            if (savedAlert && (savedAlert.startsWith('http') || savedAlert.startsWith('data:image'))) {
+                banner.src = savedAlert;
             }
           };
 
           loadAlert();
 
           alertBox.addEventListener('click', () => {
-            window.location.href = 'internship.html';
+             window.location.href = 'internship.html';
           });
 
           window.addEventListener('storage', (e) => {
@@ -560,4 +558,3 @@
 
 
 </html>
-
